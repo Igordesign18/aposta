@@ -382,7 +382,47 @@
         const WEBHOOK_URL = 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat';
         let sessionId = 'session_' + Date.now();
 
-        function loadMatches() {
+        async function loadMatches() {
+            try {
+                // Tenta carregar jogos reais da API
+                const response = await fetch('https://api.football-data.org/v4/matches?status=LIVE,SCHEDULED', {
+                    headers: {
+                        'X-Auth-Token': '9d137eb74f304bc5a79bd6fd6128b2a1'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.matches && data.matches.length > 0) {
+                        displayMatches(data.matches.slice(0, 10));
+                        return;
+                    }
+                }
+                
+                // Se a API falhar, tenta via proxy CORS
+                const proxyResponse = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://api.football-data.org/v4/matches?status=LIVE,SCHEDULED'), {
+                    headers: {
+                        'X-Auth-Token': '9d137eb74f304bc5a79bd6fd6128b2a1'
+                    }
+                });
+
+                if (proxyResponse.ok) {
+                    const data = await proxyResponse.json();
+                    if (data.matches && data.matches.length > 0) {
+                        displayMatches(data.matches.slice(0, 10));
+                        return;
+                    }
+                }
+                
+                throw new Error('API não disponível');
+                
+            } catch (error) {
+                console.log('Usando jogos de fallback:', error);
+                loadFallbackMatches();
+            }
+        }
+
+        function loadFallbackMatches() {
             const now = new Date();
             const matches = [];
             
@@ -407,7 +447,12 @@
                     status: 'IN_PLAY',
                     competition: { name: team.league },
                     utcDate: new Date(now.getTime() - (30 * 60000)).toISOString(),
-                    score: `${Math.floor(Math.random() * 3)} - ${Math.floor(Math.random() * 3)}`
+                    score: { 
+                        fullTime: { 
+                            home: Math.floor(Math.random() * 3), 
+                            away: Math.floor(Math.random() * 3) 
+                        } 
+                    }
                 });
             }
             
@@ -430,18 +475,40 @@
             const matchesList = document.getElementById('matchesList');
             
             if (!matches || matches.length === 0) {
-                matchesList.innerHTML = '<div class="loading">Nenhum jogo disponível</div>';
+                matchesList.innerHTML = '<div class="loading">Nenhum jogo disponível no momento</div>';
                 return;
             }
 
             matchesList.innerHTML = matches.map(match => {
                 const date = new Date(match.utcDate);
                 let status;
+                let scoreDisplay = '';
                 
-                if (match.status === 'IN_PLAY') {
-                    status = `🔴 AO VIVO ${match.score || ''}`;
+                if (match.status === 'IN_PLAY' || match.status === 'LIVE') {
+                    // Jogos ao vivo
+                    if (match.score && match.score.fullTime) {
+                        scoreDisplay = `${match.score.fullTime.home || 0} - ${match.score.fullTime.away || 0}`;
+                    } else if (match.score && match.score.home !== undefined) {
+                        scoreDisplay = `${match.score.home} - ${match.score.away}`;
+                    }
+                    status = `🔴 AO VIVO ${scoreDisplay}`;
+                } else if (match.status === 'PAUSED') {
+                    // Intervalo
+                    if (match.score && match.score.halfTime) {
+                        scoreDisplay = `${match.score.halfTime.home || 0} - ${match.score.halfTime.away || 0}`;
+                    }
+                    status = `⏸️ INTERVALO ${scoreDisplay}`;
+                } else if (match.status === 'FINISHED') {
+                    // Jogo finalizado
+                    if (match.score && match.score.fullTime) {
+                        scoreDisplay = `${match.score.fullTime.home || 0} - ${match.score.fullTime.away || 0}`;
+                    }
+                    status = `✅ FINALIZADO ${scoreDisplay}`;
                 } else {
-                    status = `📅 ${date.toLocaleDateString('pt-BR')} às ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+                    // Jogos programados
+                    const timeString = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+                    const dateString = date.toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'});
+                    status = `📅 ${dateString} às ${timeString}`;
                 }
                 
                 return `
