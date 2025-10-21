@@ -243,6 +243,11 @@
             transform: translateY(-2px);
         }
 
+        .start-chat-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
         .start-chat-btn i {
             font-size: 1.5em;
         }
@@ -253,6 +258,13 @@
             opacity: 0.7;
             font-size: 1em;
             text-align: center;
+        }
+
+        .loading-text {
+            margin-top: 15px;
+            color: #42a5f5;
+            font-size: 0.9em;
+            display: none;
         }
 
         /* === TABS === */
@@ -590,17 +602,20 @@
             <div class="chat-container">
                 <!-- Botão para Iniciar Chat -->
                 <div id="chatInitButton" class="chat-init-wrapper">
-                    <button class="start-chat-btn" onclick="initializeChat()">
+                    <button class="start-chat-btn" onclick="initializeChat()" id="startBtn">
                         <i class="fas fa-comments"></i>
                         <span>Iniciar Conversa com o Assistente</span>
                     </button>
                     <p class="chat-info">Clique para começar a receber análises e palpites personalizados</p>
+                    <p class="loading-text" id="loadingText">
+                        <i class="fas fa-spinner fa-spin"></i> Conectando...
+                    </p>
                 </div>
                 
                 <!-- IFRAME DO CHAT N8N -->
                 <iframe 
                     id="chatIframe"
-                    src="https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat" 
+                    src="" 
                     width="100%" 
                     height="650"
                     allow="clipboard-write; microphone"
@@ -656,80 +671,125 @@
     </div>
 
     <script>
-        // Armazenar sessionId em memória (compatível com mobile)
-        let currentSessionId = null;
+        // Variáveis globais em memória
+        let userIPAddress = null;
+        let sessionId = null;
+        let userLocationData = null;
+
+        // Função para obter IP do usuário
+        async function getUserIP() {
+            try {
+                console.log('🌐 Buscando IP do usuário...');
+                
+                // Tentar múltiplas APIs para maior confiabilidade
+                const apis = [
+                    'https://api.ipify.org?format=json',
+                    'https://api64.ipify.org?format=json',
+                    'https://ipapi.co/json/'
+                ];
+
+                for (const api of apis) {
+                    try {
+                        const response = await fetch(api);
+                        const data = await response.json();
+                        
+                        if (data.ip) {
+                            userIPAddress = data.ip;
+                            console.log('✅ IP encontrado:', userIPAddress);
+                            
+                            // Se for a API ipapi.co, já tem dados de localização
+                            if (data.city) {
+                                userLocationData = {
+                                    city: data.city,
+                                    region: data.region,
+                                    country: data.country_name,
+                                    timezone: data.timezone
+                                };
+                                console.log('📍 Localização:', userLocationData);
+                            }
+                            
+                            return userIPAddress;
+                        }
+                    } catch (err) {
+                        console.log(`⚠️ Tentativa com ${api} falhou, tentando próxima...`);
+                        continue;
+                    }
+                }
+                
+                // Fallback: usar dados do navegador
+                userIPAddress = 'IP_NAO_DISPONIVEL_' + Date.now();
+                console.log('⚠️ IP não disponível, usando fallback');
+                return userIPAddress;
+                
+            } catch (error) {
+                console.error('❌ Erro ao obter IP:', error);
+                userIPAddress = 'IP_NAO_DISPONIVEL_' + Date.now();
+                return userIPAddress;
+            }
+        }
 
         // Função para gerar Session ID único
         function generateSessionId() {
-            if (!currentSessionId) {
-                const timestamp = Date.now();
-                const random = Math.random().toString(36).substring(2, 11);
-                const userAgent = navigator.userAgent.substring(0, 20).replace(/[^a-zA-Z0-9]/g, '');
-                currentSessionId = `session_${timestamp}_${random}_${userAgent}`;
-            }
-            return currentSessionId;
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substring(2, 11);
+            const userAgent = navigator.userAgent.substring(0, 20).replace(/[^a-zA-Z0-9]/g, '');
+            const ip = userIPAddress || 'noip';
+            
+            sessionId = `${ip}_${timestamp}_${random}_${userAgent}`;
+            console.log('🔑 Session ID gerado:', sessionId);
+            return sessionId;
         }
 
         // Função para inicializar o chat
-        function initializeChat() {
+        async function initializeChat() {
             const initButton = document.getElementById('chatInitButton');
             const chatIframe = document.getElementById('chatIframe');
+            const startBtn = document.getElementById('startBtn');
+            const loadingText = document.getElementById('loadingText');
             
-            // Gerar sessionId antes de mostrar o iframe
-            const sessionId = generateSessionId();
-            console.log('🔑 Session ID gerado:', sessionId);
-            
-            // Esconder botão e mostrar iframe
-            initButton.style.display = 'none';
-            chatIframe.style.display = 'block';
-            
-            // Aguardar o iframe carregar
-            chatIframe.onload = function() {
-                console.log('✅ Chat iframe carregado com sucesso');
+            try {
+                // Desabilitar botão e mostrar loading
+                startBtn.disabled = true;
+                loadingText.style.display = 'block';
+                startBtn.querySelector('span').textContent = 'Conectando...';
                 
+                // 1. Obter IP primeiro
+                await getUserIP();
+                
+                // 2. Gerar sessionId com o IP
+                const finalSessionId = generateSessionId();
+                
+                // 3. Construir URL do iframe com parâmetros
+                const iframeUrl = `https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat?sessionId=${encodeURIComponent(finalSessionId)}&userIP=${encodeURIComponent(userIPAddress)}`;
+                
+                console.log('🔗 URL do Chat:', iframeUrl);
+                
+                // 4. Configurar e mostrar iframe
+                chatIframe.src = iframeUrl;
+                
+                // Aguardar carregamento
                 setTimeout(() => {
-                    try {
-                        const message = "Olá! Gostaria de receber análises e palpites para apostas.";
-                        
-                        // Tentar enviar via postMessage
-                        chatIframe.contentWindow.postMessage({
-                            type: 'sendMessage',
-                            message: message,
-                            sessionId: sessionId
-                        }, '*');
-                        
-                        console.log('💬 Mensagem inicial enviada via postMessage');
-                        
-                        // Tentar também via fetch como alternativa
-                        fetch('https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                action: 'sendMessage',
-                                sessionId: sessionId,
-                                chatInput: message
-                            })
-                        })
-                        .then(response => {
-                            console.log('✅ Resposta do webhook recebida');
-                            return response.json();
-                        })
-                        .catch(err => {
-                            console.log('ℹ️ Fetch alternativo executado');
-                        });
-                        
-                    } catch (e) {
-                        console.log('⚠️ Erro ao enviar mensagem:', e);
-                    }
-                }, 1500);
-            };
-            
-            // Log de erro caso o iframe não carregue
-            chatIframe.onerror = function() {
-                console.error('❌ Erro ao carregar o iframe do chat');
-            };
+                    initButton.style.display = 'none';
+                    chatIframe.style.display = 'block';
+                    
+                    console.log('✅ Chat iniciado com sucesso');
+                    console.log('📊 Dados da sessão:', {
+                        sessionId: finalSessionId,
+                        userIP: userIPAddress,
+                        location: userLocationData,
+                        userAgent: navigator.userAgent.substring(0, 50),
+                        platform: navigator.platform,
+                        language: navigator.language
+                    });
+                }, 1000);
+                
+            } catch (error) {
+                console.error('❌ Erro ao inicializar chat:', error);
+                startBtn.disabled = false;
+                loadingText.style.display = 'none';
+                startBtn.querySelector('span').textContent = 'Tentar Novamente';
+                alert('Erro ao conectar. Por favor, tente novamente.');
+            }
         }
 
         // Função para alternar seções
@@ -756,8 +816,18 @@
 
         // Log de inicialização
         console.log('✅ DarlanBets - Sistema carregado');
-        console.log('📱 User Agent:', navigator.userAgent.substring(0, 50));
-        console.log('🌐 Plataforma:', navigator.platform);
+        console.log('📱 Dispositivo:', {
+            userAgent: navigator.userAgent.substring(0, 80),
+            platform: navigator.platform,
+            language: navigator.language,
+            screen: `${window.screen.width}x${window.screen.height}`,
+            viewport: `${window.innerWidth}x${window.innerHeight}`
+        });
+        
+        // Pré-carregar IP em background
+        getUserIP().then(() => {
+            console.log('🎯 Sistema pronto para iniciar chat');
+        });
     </script>
 </body>
 </html>
