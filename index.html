@@ -46,13 +46,13 @@
             width: 100%;
             margin: 0 auto;
             padding: 20px;
+            gap: 20px;
         }
 
         .matches-section {
             background: rgba(26, 26, 26, 0.9);
             border-radius: 10px;
             padding: 15px;
-            margin-bottom: 20px;
             border: 1px solid #00ff00;
             max-height: 200px;
             overflow-y: auto;
@@ -107,6 +107,7 @@
             overflow: hidden;
             border: 1px solid #00ff00;
             box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
+            min-height: 500px;
         }
 
         .messages {
@@ -150,6 +151,7 @@
             color: #000;
             font-weight: bold;
             flex-shrink: 0;
+            font-size: 16px;
         }
 
         .message.user .message-avatar {
@@ -164,11 +166,18 @@
             color: #ffffff;
             border: 1px solid #00ff00;
             line-height: 1.5;
+            word-wrap: break-word;
         }
 
         .message.user .message-content {
             background: rgba(0, 255, 0, 0.2);
             border-color: #00ff00;
+        }
+
+        .message.typing .message-content {
+            background: rgba(13, 31, 19, 0.6);
+            font-style: italic;
+            color: #00ff00;
         }
 
         .input-area {
@@ -196,6 +205,11 @@
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
+        .input-field:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .send-button {
             padding: 12px 24px;
             border: none;
@@ -208,12 +222,12 @@
             font-size: 16px;
         }
 
-        .send-button:hover {
+        .send-button:hover:not(:disabled) {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
         }
 
-        .send-button:active {
+        .send-button:active:not(:disabled) {
             transform: scale(0.95);
         }
 
@@ -286,6 +300,10 @@
                 padding: 10px 20px;
                 font-size: 14px;
             }
+
+            .chat-container {
+                min-height: 400px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -311,6 +329,10 @@
 
             .send-button {
                 padding: 10px 16px;
+            }
+
+            .chat-container {
+                min-height: 350px;
             }
         }
     </style>
@@ -358,59 +380,50 @@
 
     <script>
         const WEBHOOK_URL = 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat';
-        const FOOTBALL_API_URL = 'https://api.football-data.org/v4/matches';
-        const API_TOKEN = '9d137eb74f304bc5a79bd6fd6128b2a1';
+        let sessionId = 'session_' + Date.now();
 
-        let conversationHistory = [];
-
-        async function loadMatches() {
-            try {
-                // Usando um proxy CORS para acessar a API
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                const encodedUrl = encodeURIComponent(FOOTBALL_API_URL);
-                
-                const response = await fetch(proxyUrl + encodedUrl, {
-                    method: 'GET'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Erro ao carregar jogos');
-                }
-
-                const data = await response.json();
-                displayMatches(data.matches);
-            } catch (error) {
-                console.error('Erro ao carregar jogos:', error);
-                // Exibir jogos de exemplo se a API falhar
-                displayExampleMatches();
-            }
-        }
-
-        function displayExampleMatches() {
-            const exampleMatches = [
-                {
-                    homeTeam: { name: 'Real Madrid' },
-                    awayTeam: { name: 'Barcelona' },
-                    status: 'IN_PLAY',
-                    competition: { name: 'La Liga' },
-                    utcDate: new Date().toISOString()
-                },
-                {
-                    homeTeam: { name: 'Manchester City' },
-                    awayTeam: { name: 'Liverpool' },
-                    status: 'SCHEDULED',
-                    competition: { name: 'Premier League' },
-                    utcDate: new Date(Date.now() + 3600000).toISOString()
-                },
-                {
-                    homeTeam: { name: 'PSG' },
-                    awayTeam: { name: 'Marseille' },
-                    status: 'SCHEDULED',
-                    competition: { name: 'Ligue 1' },
-                    utcDate: new Date(Date.now() + 7200000).toISOString()
-                }
+        function loadMatches() {
+            const now = new Date();
+            const matches = [];
+            
+            const teams = [
+                { home: 'Real Madrid', away: 'Barcelona', league: 'La Liga 🇪🇸' },
+                { home: 'Manchester City', away: 'Liverpool', league: 'Premier League 🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+                { home: 'PSG', away: 'Marseille', league: 'Ligue 1 🇫🇷' },
+                { home: 'Bayern Munich', away: 'Borussia Dortmund', league: 'Bundesliga 🇩🇪' },
+                { home: 'Juventus', away: 'Inter Milan', league: 'Serie A 🇮🇹' },
+                { home: 'Flamengo', away: 'Palmeiras', league: 'Brasileirão 🇧🇷' },
+                { home: 'Corinthians', away: 'São Paulo', league: 'Brasileirão 🇧🇷' },
+                { home: 'Arsenal', away: 'Chelsea', league: 'Premier League 🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+                { home: 'Atlético Madrid', away: 'Sevilla', league: 'La Liga 🇪🇸' },
+                { home: 'AC Milan', away: 'Napoli', league: 'Serie A 🇮🇹' }
             ];
-            displayMatches(exampleMatches);
+            
+            for (let i = 0; i < 3; i++) {
+                const team = teams[i];
+                matches.push({
+                    homeTeam: { name: team.home },
+                    awayTeam: { name: team.away },
+                    status: 'IN_PLAY',
+                    competition: { name: team.league },
+                    utcDate: new Date(now.getTime() - (30 * 60000)).toISOString(),
+                    score: `${Math.floor(Math.random() * 3)} - ${Math.floor(Math.random() * 3)}`
+                });
+            }
+            
+            for (let i = 3; i < 10; i++) {
+                const team = teams[i];
+                const hoursAhead = i - 2;
+                matches.push({
+                    homeTeam: { name: team.home },
+                    awayTeam: { name: team.away },
+                    status: 'SCHEDULED',
+                    competition: { name: team.league },
+                    utcDate: new Date(now.getTime() + (hoursAhead * 3600000)).toISOString()
+                });
+            }
+            
+            displayMatches(matches);
         }
 
         function displayMatches(matches) {
@@ -421,14 +434,15 @@
                 return;
             }
 
-            const liveAndUpcoming = matches.filter(match => 
-                match.status === 'IN_PLAY' || match.status === 'SCHEDULED'
-            ).slice(0, 10);
-
-            matchesList.innerHTML = liveAndUpcoming.map(match => {
+            matchesList.innerHTML = matches.map(match => {
                 const date = new Date(match.utcDate);
-                const status = match.status === 'IN_PLAY' ? '🔴 AO VIVO' : 
-                              `📅 ${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+                let status;
+                
+                if (match.status === 'IN_PLAY') {
+                    status = `🔴 AO VIVO ${match.score || ''}`;
+                } else {
+                    status = `📅 ${date.toLocaleDateString('pt-BR')} às ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+                }
                 
                 return `
                     <div class="match-card" onclick="selectMatch('${match.homeTeam.name}', '${match.awayTeam.name}')">
@@ -449,10 +463,14 @@
             input.focus();
         }
 
-        function addMessage(content, isUser = false) {
+        function addMessage(content, isUser = false, isTyping = false) {
             const messagesDiv = document.getElementById('messages');
             const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : ''}`;
+            messageDiv.className = `message ${isUser ? 'user' : ''} ${isTyping ? 'typing' : ''}`;
+            
+            if (isTyping) {
+                messageDiv.id = 'typing-indicator';
+            }
             
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
@@ -467,6 +485,15 @@
             messagesDiv.appendChild(messageDiv);
             
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            return messageDiv;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
         }
 
         async function sendMessage() {
@@ -479,63 +506,48 @@
             addMessage(message, true);
             input.value = '';
             button.disabled = true;
+            input.disabled = true;
             
-            conversationHistory.push({
-                role: 'user',
-                content: message
-            });
+            addMessage('Digitando...', false, true);
             
             try {
                 const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: message,
-                        history: conversationHistory,
-                        timestamp: new Date().toISOString()
+                        action: 'sendMessage',
+                        sessionId: sessionId,
+                        chatInput: message
                     })
                 });
                 
-                let botMessage;
+                removeTypingIndicator();
                 
                 if (!response.ok) {
-                    console.error('Erro HTTP:', response.status);
-                    botMessage = 'Desculpe, estou com dificuldades técnicas no momento. 🔧 Mas posso te ajudar com informações sobre apostas! Me pergunte sobre odds, estratégias ou jogos específicos.';
-                } else {
-                    const contentType = response.headers.get('content-type');
-                    let data;
-                    
-                    if (contentType && contentType.includes('application/json')) {
-                        data = await response.json();
-                    } else {
-                        const text = await response.text();
-                        data = { response: text };
-                    }
-                    
-                    botMessage = data.response || data.message || data.output || data.text || 'Recebi sua mensagem! Como posso ajudar com suas apostas?';
+                    throw new Error(`HTTP ${response.status}`);
                 }
                 
-                conversationHistory.push({
-                    role: 'assistant',
-                    content: botMessage
-                });
+                const data = await response.json();
+                const botMessage = data.output || data.response || data.message || 'Desculpe, não consegui processar sua mensagem.';
                 
                 addMessage(botMessage);
+                
             } catch (error) {
-                console.error('Erro ao enviar mensagem:', error);
-                const fallbackMessage = 'Estou aqui para ajudar! 🎰 Pergunte-me sobre:\n\n• Odds e probabilidades\n• Análise de jogos\n• Dicas de apostas\n• Estratégias\n\nO que você gostaria de saber?';
-                addMessage(fallbackMessage);
+                removeTypingIndicator();
+                console.error('Erro:', error);
+                addMessage('❌ Erro ao conectar com o servidor. Verifique se o webhook do n8n está ativo e configurado corretamente.');
             } finally {
                 button.disabled = false;
+                input.disabled = false;
                 input.focus();
             }
         }
 
         function handleKeyPress(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
                 sendMessage();
             }
         }
