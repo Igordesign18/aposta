@@ -165,8 +165,84 @@
             background: rgba(13, 31, 19, 0.8);
             color: #ffffff;
             border: 1px solid #00ff00;
-            line-height: 1.5;
+            line-height: 1.6;
             word-wrap: break-word;
+            white-space: pre-wrap;
+            font-size: 15px;
+        }
+
+        .message-content p {
+            margin: 8px 0;
+        }
+
+        .message-content ul,
+        .message-content ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .message-content li {
+            margin: 5px 0;
+        }
+
+        .message-content strong {
+            color: #00ff00;
+            font-weight: 600;
+        }
+
+        .message-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .message-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .message-content h1,
+        .message-content h2,
+        .message-content h3 {
+            color: #00ff00;
+            margin: 12px 0 8px 0;
+        }
+
+        .message-content h1 {
+            font-size: 20px;
+        }
+
+        .message-content h2 {
+            font-size: 18px;
+        }
+
+        .message-content h3 {
+            font-size: 16px;
+        }
+
+        .message-content blockquote {
+            border-left: 3px solid #00ff00;
+            padding-left: 12px;
+            margin: 10px 0;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .message-content a {
+            color: #00ff00;
+            text-decoration: underline;
+        }
+
+        .message-content hr {
+            border: none;
+            border-top: 1px solid #00ff00;
+            margin: 15px 0;
+            opacity: 0.3;
         }
 
         .message.user .message-content {
@@ -545,6 +621,76 @@
             
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
+            
+            // Formata o conteúdo para melhor visualização
+            let formattedContent = content;
+            
+            if (!isUser && !isTyping) {
+                // Converte markdown básico para HTML
+                formattedContent = formatMessage(content);
+            } else {
+                // Para mensagens do usuário, apenas quebras de linha
+                formattedContent = content.replace(/\n/g, '<br>');
+            }
+            
+            contentDiv.innerHTML = formattedContent;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(contentDiv);
+            messagesDiv.appendChild(messageDiv);
+            
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            return messageDiv;
+        }
+
+        function formatMessage(text) {
+            // Remove espaços extras no início e fim
+            text = text.trim();
+            
+            // Converte quebras de linha duplas em parágrafos
+            text = text.replace(/\n\n+/g, '</p><p>');
+            text = '<p>' + text + '</p>';
+            
+            // Converte quebras de linha simples em <br>
+            text = text.replace(/\n/g, '<br>');
+            
+            // Converte **negrito**
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            
+            // Converte __negrito__
+            text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+            
+            // Converte *itálico*
+            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            
+            // Converte _itálico_
+            text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+            
+            // Converte `código`
+            text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+            
+            // Converte listas numeradas
+            text = text.replace(/(<br>|^)(\d+)\.\s+(.+?)(?=<br>|<\/p>|$)/g, function(match, br, num, content) {
+                return br + '<li>' + content + '</li>';
+            });
+            
+            // Envolve listas numeradas em <ol>
+            text = text.replace(/(<li>.*?<\/li>)+/g, '<ol>        function addMessage(content, isUser = false, isTyping = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : ''} ${isTyping ? 'typing' : ''}`;
+            
+            if (isTyping) {
+                messageDiv.id = 'typing-indicator';
+            }
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? 'U' : 'DB';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
             contentDiv.innerHTML = content.replace(/\n/g, '<br>');
             
             messageDiv.appendChild(avatar);
@@ -554,6 +700,39 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
             return messageDiv;
+        }</ol>');
+            
+            // Converte listas com bullet points (- ou •)
+            text = text.replace(/(<br>|^)[-•]\s+(.+?)(?=<br>|<\/p>|$)/g, function(match, br, content) {
+                return br + '<li>' + content + '</li>';
+            });
+            
+            // Envolve listas com bullets em <ul> (evitando duplicatas com <ol>)
+            text = text.replace(/(<li>(?!.*<ol>).*?<\/li>)+/g, function(match) {
+                if (!match.includes('<ol>')) {
+                    return '<ul>' + match + '</ul>';
+                }
+                return match;
+            });
+            
+            // Converte títulos ### Título
+            text = text.replace(/###\s+(.+?)(<br>|<\/p>)/g, '<h3>$1</h3>');
+            text = text.replace(/##\s+(.+?)(<br>|<\/p>)/g, '<h2>$1</h2>');
+            text = text.replace(/#\s+(.+?)(<br>|<\/p>)/g, '<h1>$1</h1>');
+            
+            // Converte links [texto](url)
+            text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+            
+            // Converte ---  em linha horizontal
+            text = text.replace(/(<br>|^)---+(<br>|$)/g, '$1<hr>$2');
+            
+            // Limpa parágrafos vazios
+            text = text.replace(/<p>\s*<\/p>/g, '');
+            
+            // Limpa <br> extras
+            text = text.replace(/(<br>\s*)+/g, '<br>');
+            
+            return text;
         }
 
         function removeTypingIndicator() {
