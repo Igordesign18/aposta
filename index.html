@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            background: #1a1f3a;
             min-height: 100vh;
             padding: 20px;
             color: #fff;
@@ -25,76 +25,73 @@
             margin: 0 auto;
         }
 
+        /* === HEADER === */
         header {
             text-align: center;
-            color: white;
             margin-bottom: 40px;
             padding: 30px 20px;
-            background: rgba(13, 71, 161, 0.3);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(66, 165, 245, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
             font-size: 3em;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(66, 165, 245, 0.8);
-            background: linear-gradient(45deg, #42a5f5, #1e88e5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            animation: glow 3s infinite;
         }
 
-        h1 i {
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+            50% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
         }
 
         .subtitle {
             font-size: 1.2em;
-            color: #90caf9;
+            color: #ffffff;
             margin-bottom: 15px;
+            opacity: 0.9;
         }
 
         .info-badge {
             display: inline-flex;
             align-items: center;
             gap: 20px;
-            background: rgba(66, 165, 245, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             padding: 12px 30px;
             border-radius: 25px;
             margin-top: 10px;
-            border: 1px solid rgba(66, 165, 245, 0.5);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .info-badge span {
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #ffffff;
         }
 
-        /* CHAT DE IA - INTERFACE ELEGANTE */
+        /* === CHAT SECTION === */
         .chat-section {
-            background: linear-gradient(135deg, rgba(13, 71, 161, 0.3), rgba(25, 118, 210, 0.2));
-            padding: 0;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             margin-bottom: 40px;
-            border: 2px solid rgba(66, 165, 245, 0.4);
-            box-shadow: 0 8px 32px rgba(66, 165, 245, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
 
         .chat-header {
-            background: linear-gradient(135deg, rgba(13, 71, 161, 0.5), rgba(25, 118, 210, 0.4));
+            background: rgba(255, 255, 255, 0.08);
             padding: 25px 30px;
-            border-bottom: 2px solid rgba(66, 165, 245, 0.4);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .chat-header-content {
@@ -113,7 +110,6 @@
             justify-content: center;
             font-size: 28px;
             box-shadow: 0 0 25px rgba(66, 165, 245, 0.6);
-            color: white;
         }
 
         .chat-title {
@@ -131,7 +127,6 @@
 
         .chat-title p {
             color: #90caf9;
-            font-size: 1em;
         }
 
         .chat-status {
@@ -153,14 +148,11 @@
         }
 
         @keyframes pulse-dot {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-            }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
         }
 
+        /* === FEATURES GRID === */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -174,53 +166,45 @@
             align-items: flex-start;
             gap: 15px;
             padding: 15px;
-            background: rgba(66, 165, 245, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            border: 1px solid rgba(66, 165, 245, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
         }
 
         .feature-item:hover {
-            background: rgba(66, 165, 245, 0.15);
-            border-color: rgba(66, 165, 245, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
 
         .feature-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            background: #ffffff;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-size: 18px;
             flex-shrink: 0;
-        }
-
-        .feature-text {
-            flex: 1;
+            color: #1a1f3a;
         }
 
         .feature-text h4 {
-            color: #42a5f5;
+            color: #ffffff;
             margin-bottom: 5px;
             font-size: 1.1em;
         }
 
         .feature-text p {
-            color: #90caf9;
+            color: #ffffff;
+            opacity: 0.7;
             font-size: 0.9em;
             line-height: 1.4;
         }
 
-        .chat-container {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 0;
-            border-top: 2px solid rgba(66, 165, 245, 0.3);
-        }
-
+        /* === CHAT MESSAGES === */
         .custom-chat {
             display: flex;
             flex-direction: column;
@@ -275,9 +259,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
             font-size: 20px;
-            color: white;
+            flex-shrink: 0;
         }
 
         .bot-message .message-avatar {
@@ -320,6 +303,7 @@
             border-color: rgba(38, 198, 218, 0.2);
         }
 
+        /* === TYPING INDICATOR === */
         .typing-indicator {
             display: flex;
             gap: 5px;
@@ -339,13 +323,8 @@
             animation: typing 1.4s infinite;
         }
 
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes typing {
             0%, 60%, 100% {
@@ -358,6 +337,7 @@
             }
         }
 
+        /* === CHAT INPUT === */
         .chat-input-container {
             padding: 20px 25px;
             background: rgba(0, 0, 0, 0.4);
@@ -419,6 +399,7 @@
             cursor: not-allowed;
         }
 
+        /* === TABS === */
         .tabs {
             display: flex;
             gap: 15px;
@@ -429,34 +410,34 @@
 
         .tab {
             padding: 15px 35px;
-            background: rgba(13, 71, 161, 0.3);
-            border: 2px solid rgba(66, 165, 245, 0.3);
-            color: #90caf9;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
             cursor: pointer;
             border-radius: 30px;
             font-size: 17px;
             font-weight: 600;
             transition: all 0.3s;
-            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .tab:hover {
-            background: rgba(66, 165, 245, 0.2);
-            border-color: #42a5f5;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
         }
 
         .tab.active {
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
-            color: white;
-            border-color: #42a5f5;
-            box-shadow: 0 5px 20px rgba(66, 165, 245, 0.6);
+            background: #ffffff;
+            color: #1a1f3a;
+            border-color: #ffffff;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
         }
 
+        /* === SECTIONS === */
         .section {
             display: none;
         }
@@ -466,20 +447,19 @@
         }
 
         .embed-container {
-            background: rgba(13, 71, 161, 0.2);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 25px;
-            border: 2px solid rgba(66, 165, 245, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .embed-title {
-            color: #42a5f5;
+            color: #ffffff;
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 20px;
             text-align: center;
-            text-shadow: 0 0 10px rgba(66, 165, 245, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -492,6 +472,7 @@
             background: rgba(0, 0, 0, 0.3);
         }
 
+        /* === RESPONSIVE === */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
@@ -511,32 +492,16 @@
                 grid-template-columns: 1fr;
             }
 
-            .chat-container iframe {
-                height: 500px;
-            }
-
             .info-badge {
                 flex-direction: column;
                 gap: 10px;
             }
         }
-
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 20px rgba(66, 165, 245, 0.8);
-            }
-            50% {
-                text-shadow: 0 0 30px rgba(66, 165, 245, 1);
-            }
-        }
-
-        h1 {
-            animation: glow 3s infinite;
-        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <header>
             <h1>
                 <i class="fas fa-dice"></i>
@@ -550,7 +515,7 @@
             </div>
         </header>
 
-        <!-- CHAT DE IA COM INTERFACE ELEGANTE -->
+        <!-- CHAT DO N8N -->
         <div class="chat-section">
             <div class="chat-header">
                 <div class="chat-header-content">
@@ -573,9 +538,7 @@
 
             <div class="features-grid">
                 <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
                     <div class="feature-text">
                         <h4>Análise Estatística</h4>
                         <p>Dados completos de times e jogadores</p>
@@ -583,9 +546,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
+                    <div class="feature-icon"><i class="fas fa-history"></i></div>
                     <div class="feature-text">
                         <h4>Histórico de Confrontos</h4>
                         <p>Análise de jogos anteriores entre times</p>
@@ -593,9 +554,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
+                    <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
                     <div class="feature-text">
                         <h4>Palpites Precisos</h4>
                         <p>Indicações com maior probabilidade</p>
@@ -603,9 +562,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
+                    <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
                     <div class="feature-text">
                         <h4>Alertas Importantes</h4>
                         <p>Lesões e desfalques em tempo real</p>
@@ -613,9 +570,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
+                    <div class="feature-icon"><i class="fas fa-coins"></i></div>
                     <div class="feature-text">
                         <h4>Análise de Odds</h4>
                         <p>Melhores oportunidades de apostas</p>
@@ -623,9 +578,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
                     <div class="feature-text">
                         <h4>Estratégias Personalizadas</h4>
                         <p>Recomendações para seu perfil</p>
@@ -634,48 +587,13 @@
             </div>
 
             <div class="chat-container">
-                <!-- CHAT CUSTOMIZADO -->
-                <div class="custom-chat">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message bot-message">
-                            <div class="message-avatar">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <div class="message-content">
-                                <div class="message-name">Assistente DarlanBets</div>
-                                <div class="message-text">
-                                    Olá! Sou seu assistente de apostas com IA. Como posso ajudar você hoje?
-                                    <br><br>
-                                    Você pode me perguntar sobre:
-                                    <br>• Análises de jogos
-                                    <br>• Estatísticas de times
-                                    <br>• Palpites para apostas
-                                    <br>• Odds e probabilidades
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-input-container">
-                        <div class="typing-indicator" id="typingIndicator" style="display: none;">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                id="chatInput" 
-                                class="chat-input" 
-                                placeholder="Digite sua pergunta aqui..."
-                                autocomplete="off"
-                            >
-                            <button class="send-button" id="sendButton">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <!-- IFRAME DO CHAT N8N -->
+                <iframe 
+                    src="https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat" 
+                    width="100%" 
+                    height="650" 
+                    style="border: none; border-radius: 0;">
+                </iframe>
             </div>
         </div>
 
@@ -698,13 +616,12 @@
                     <i class="fas fa-futbol"></i>
                     Placar ao Vivo - Jogos Acontecendo Agora
                 </div>
-                <iframe src="https://www.scorebat.com/embed/livescore/?token=MjQ2MDczXzE3NjEwNDY2MDRfODRiM2ZlZTY4NGM3YjJiYzVlOGE1MjNjZjgwODM1ZDQyZmIwOGRlMw==" 
-                        width="100%" 
-                        height="760" 
-                        allowfullscreen 
-                        allow='autoplay; fullscreen' 
-                        style="width:100%;height:760px;overflow:hidden;display:block;" 
-                        class="_scorebatEmbeddedPlayer_">
+                <iframe 
+                    src="https://www.scorebat.com/embed/livescore/?token=MjQ2MDczXzE3NjEwNDY2MDRfODRiM2ZlZTY4NGM3YjJiYzVlOGE1MjNjZjgwODM1ZDQyZmIwOGRlMw==" 
+                    width="100%" 
+                    height="760" 
+                    allowfullscreen 
+                    allow='autoplay; fullscreen'>
                 </iframe>
             </div>
         </div>
@@ -716,20 +633,18 @@
                     <i class="fas fa-list-alt"></i>
                     Jogos da Semana - Horários e Resultados
                 </div>
-                <iframe src="https://www.scorebat.com/embed/livescore/" 
-                        width="100%" 
-                        height="800" 
-                        allowfullscreen 
-                        style="width:100%;height:800px;overflow:hidden;display:block;">
+                <iframe 
+                    src="https://www.scorebat.com/embed/livescore/" 
+                    width="100%" 
+                    height="800" 
+                    allowfullscreen>
                 </iframe>
             </div>
-                        </div>
-
+        </div>
     </div>
 
     <script>
-        const WEBHOOK_URL = 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat';
-        
+        // Função para alternar seções
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.section');
             const tabs = document.querySelectorAll('.tab');
@@ -740,119 +655,6 @@
             document.getElementById(sectionId).classList.add('active');
             event.target.classList.add('active');
         }
-
-        // CHAT FUNCTIONALITY
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-        const typingIndicator = document.getElementById('typingIndicator');
-
-        function addMessage(text, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">
-                    <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
-                </div>
-                <div class="message-content">
-                    <div class="message-name">${isUser ? 'Você' : 'Assistente DarlanBets'}</div>
-                    <div class="message-text">${text}</div>
-                </div>
-            `;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function showTyping() {
-            typingIndicator.style.display = 'flex';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function hideTyping() {
-            typingIndicator.style.display = 'none';
-        }
-
-        async function sendMessage() {
-            const message = chatInput.value.trim();
-            if (!message) return;
-
-            // Adicionar mensagem do usuário
-            addMessage(message, true);
-            chatInput.value = '';
-            sendButton.disabled = true;
-
-            // Mostrar indicador de digitação
-            showTyping();
-
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'sendMessage',
-                        sessionId: getSessionId(),
-                        chatInput: message
-                    })
-                });
-
-                hideTyping();
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('Resposta do N8N:', data);
-
-                // Tentar diferentes formatos de resposta do N8N
-                let botResponse = data.output || 
-                                 data.response || 
-                                 data.message || 
-                                 data.text ||
-                                 data.reply ||
-                                 (typeof data === 'string' ? data : null);
-
-                // Se não encontrar resposta válida
-                if (!botResponse || botResponse.trim() === '') {
-                    console.warn('Resposta vazia do webhook. Dados recebidos:', data);
-                    botResponse = 'Recebi sua mensagem! No momento estou processando as informações. Tente fazer outra pergunta.';
-                }
-
-                addMessage(botResponse, false);
-
-            } catch (error) {
-                console.error('Erro ao enviar mensagem:', error);
-                hideTyping();
-                
-                // Mensagem de erro mais amigável
-                addMessage('Desculpe, estou com problemas de conexão no momento. Por favor, tente novamente em alguns instantes. 🔄', false);
-            } finally {
-                sendButton.disabled = false;
-                chatInput.focus();
-            }
-        }
-
-        function getSessionId() {
-            let sessionId = localStorage.getItem('darlanbet_session');
-            if (!sessionId) {
-                sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('darlanbet_session', sessionId);
-            }
-            return sessionId;
-        }
-
-        // Event listeners
-        sendButton.addEventListener('click', sendMessage);
-        
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
 
         // Carregar script do ScoreBat
         (function(d, s, id) {
