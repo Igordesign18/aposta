@@ -16,166 +16,272 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            background: #1a1f3a;
             min-height: 100vh;
             padding: 20px;
             color: #fff;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
         /* === HEADER === */
         header {
             text-align: center;
-            margin-bottom: 50px;
-            padding: 40px 20px;
+            margin-bottom: 40px;
+            padding: 30px 20px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
+            border-radius: 20px;
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
-            font-size: 3.5em;
-            margin-bottom: 15px;
+            font-size: 3em;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             color: #ffffff;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
             animation: glow 3s infinite;
         }
 
         @keyframes glow {
             0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
-            50% { text-shadow: 0 0 40px rgba(255, 255, 255, 0.6); }
+            50% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
         }
 
         .subtitle {
-            font-size: 1.3em;
+            font-size: 1.2em;
             color: #ffffff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             opacity: 0.9;
         }
 
         .info-badge {
             display: inline-flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px 35px;
-            border-radius: 30px;
-            margin-top: 15px;
+            padding: 12px 30px;
+            border-radius: 25px;
+            margin-top: 10px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .info-badge span {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: #ffffff;
-            font-weight: 500;
         }
 
-        /* === FEATURES SECTION === */
-        .features-section {
+        /* === CHAT SECTION === */
+        .chat-section {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
-            padding: 40px;
-            margin-bottom: 50px;
+            border-radius: 20px;
+            margin-bottom: 40px;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
-        .features-title {
-            text-align: center;
-            font-size: 2em;
-            margin-bottom: 30px;
-            color: #ffffff;
+        .chat-header {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            font-size: 28px;
+            box-shadow: 0 0 25px rgba(66, 165, 245, 0.6);
         }
 
+        .chat-title {
+            flex: 1;
+        }
+
+        .chat-title h2 {
+            color: #42a5f5;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-title p {
+            color: #90caf9;
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 20px;
+            border: 1px solid rgba(76, 175, 80, 0.4);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+        }
+
+        /* === FEATURES GRID === */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 25px;
-            border-radius: 20px;
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
-            text-align: center;
         }
 
-        .feature-card:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
-            border-radius: 20px;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            margin: 0 auto 20px;
-            box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4);
+            font-size: 18px;
+            flex-shrink: 0;
+            color: #1a1f3a;
         }
 
-        .feature-card h3 {
+        .feature-text h4 {
             color: #ffffff;
-            margin-bottom: 10px;
-            font-size: 1.2em;
+            margin-bottom: 5px;
+            font-size: 1.1em;
         }
 
-        .feature-card p {
+        .feature-text p {
             color: #ffffff;
-            opacity: 0.8;
-            line-height: 1.6;
+            opacity: 0.7;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        /* === BOTÃO INICIAR CHAT === */
+        .chat-init-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 30px;
+            background: rgba(0, 0, 0, 0.2);
+            min-height: 650px;
+        }
+
+        .start-chat-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 50px;
+            font-size: 1.3em;
+            font-weight: 600;
+            background: #ffffff;
+            color: #1a1f3a;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .start-chat-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.4);
+            background: #f0f0f0;
+        }
+
+        .start-chat-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .start-chat-btn i {
+            font-size: 1.5em;
+        }
+
+        .chat-info {
+            margin-top: 20px;
+            color: #ffffff;
+            opacity: 0.7;
+            font-size: 1em;
+            text-align: center;
         }
 
         /* === TABS === */
         .tabs {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
             margin-bottom: 40px;
             flex-wrap: wrap;
         }
 
         .tab {
-            padding: 18px 40px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 15px 35px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
             cursor: pointer;
-            border-radius: 35px;
-            font-size: 18px;
+            border-radius: 30px;
+            font-size: 17px;
             font-weight: 600;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .tab:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
             box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
         }
@@ -184,7 +290,7 @@
             background: #ffffff;
             color: #1a1f3a;
             border-color: #ffffff;
-            box-shadow: 0 5px 25px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
         }
 
         /* === SECTIONS === */
@@ -198,22 +304,22 @@
 
         .embed-container {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 25px;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .embed-title {
             color: #ffffff;
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: bold;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         iframe {
@@ -222,230 +328,14 @@
             background: rgba(0, 0, 0, 0.3);
         }
 
-        /* === CHAT FLUTUANTE === */
-        .chat-bubble {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-
-        .chat-button {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #4caf50, #2e7d32);
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
-            position: relative;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 40px rgba(76, 175, 80, 0.7);
-        }
-
-        .chat-button i {
-            font-size: 35px;
-            color: white;
-        }
-
-        .chat-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff4444;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            border: 2px solid #1a1f3a;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
-            }
-            50% {
-                box-shadow: 0 8px 40px rgba(76, 175, 80, 0.8);
-            }
-        }
-
-        .chat-window {
-            position: fixed;
-            bottom: 120px;
-            right: 30px;
-            width: 420px;
-            height: 650px;
-            background: rgba(26, 31, 58, 0.98);
-            border-radius: 25px;
-            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 999;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        .chat-window.active {
-            display: flex;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .chat-window-header {
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .chat-header-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .chat-avatar {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            color: #1e88e5;
-        }
-
-        .chat-header-text h3 {
-            font-size: 1.2em;
-            margin-bottom: 3px;
-        }
-
-        .chat-header-text p {
-            font-size: 0.85em;
-            opacity: 0.9;
-        }
-
-        .chat-close {
-            width: 35px;
-            height: 35px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            transition: all 0.3s;
-        }
-
-        .chat-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
-
-        .chat-window-body {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .chat-window iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 0;
-        }
-
-        .chat-init-screen {
-            padding: 40px 30px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(26, 31, 58, 0.9), rgba(45, 53, 97, 0.9));
-        }
-
-        .chat-init-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(66, 165, 245, 0.4);
-        }
-
-        .chat-init-screen h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            color: #ffffff;
-        }
-
-        .chat-init-screen p {
-            color: #90caf9;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .start-chat-button {
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #4caf50, #2e7d32);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
-        }
-
-        .start-chat-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
-        }
-
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             body {
-                padding: 15px;
+                padding: 10px;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
                 flex-direction: column;
                 gap: 10px;
             }
@@ -456,143 +346,156 @@
 
             .info-badge {
                 flex-direction: column;
-                gap: 12px;
-                padding: 12px 25px;
+                gap: 10px;
+                padding: 10px 20px;
+            }
+
+            .info-badge span {
+                font-size: 0.9em;
             }
 
             header {
-                padding: 25px 20px;
-                margin-bottom: 30px;
+                padding: 20px 15px;
+                margin-bottom: 20px;
             }
 
-            .features-section {
-                padding: 25px 20px;
-                margin-bottom: 30px;
+            .chat-header {
+                padding: 15px;
             }
 
-            .features-title {
-                font-size: 1.5em;
-                margin-bottom: 25px;
+            .chat-header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .chat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+
+            .chat-title h2 {
+                font-size: 1.3em;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .chat-title p {
+                font-size: 0.9em;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 12px;
+                padding: 15px;
             }
 
-            .feature-card {
-                padding: 20px;
+            .feature-item {
+                padding: 12px;
             }
 
             .feature-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 25px;
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .feature-text h4 {
+                font-size: 1em;
+            }
+
+            .feature-text p {
+                font-size: 0.85em;
+            }
+
+            .chat-init-wrapper {
+                padding: 40px 20px;
+                min-height: 500px;
+            }
+
+            .start-chat-btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .start-chat-btn i {
+                font-size: 1.8em;
+            }
+
+            .chat-info {
+                font-size: 0.9em;
+                padding: 0 15px;
+            }
+
+            #chatIframe {
+                height: 500px !important;
+                min-height: 500px;
+                width: 100% !important;
+                border-radius: 0 !important;
             }
 
             .tabs {
-                gap: 12px;
-                margin-bottom: 30px;
+                gap: 10px;
+                margin-bottom: 20px;
             }
 
             .tab {
-                padding: 15px 25px;
-                font-size: 16px;
+                padding: 12px 20px;
+                font-size: 15px;
                 flex: 1;
-                min-width: 145px;
+                min-width: 140px;
                 justify-content: center;
             }
 
+            .tab i {
+                font-size: 14px;
+            }
+
             .embed-container {
-                padding: 20px 15px;
+                padding: 15px;
+                border-radius: 15px;
             }
 
             .embed-title {
-                font-size: 1.3em;
+                font-size: 1.2em;
+                margin-bottom: 15px;
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
+            }
+
+            .embed-title i {
+                font-size: 1.2em;
             }
 
             #live iframe,
             #schedule iframe {
                 height: 600px !important;
-            }
-
-            /* Chat Flutuante Mobile */
-            .chat-bubble {
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .chat-button {
-                width: 60px;
-                height: 60px;
-            }
-
-            .chat-button i {
-                font-size: 30px;
-            }
-
-            .chat-window {
-                width: calc(100vw - 40px);
-                height: calc(100vh - 160px);
-                bottom: 100px;
-                right: 20px;
-                left: 20px;
-                margin: 0 auto;
-            }
-
-            .chat-window-header {
-                padding: 15px;
-            }
-
-            .chat-avatar {
-                width: 45px;
-                height: 45px;
-                font-size: 22px;
-            }
-
-            .chat-header-text h3 {
-                font-size: 1em;
-            }
-
-            .chat-header-text p {
-                font-size: 0.8em;
-            }
-
-            .chat-init-screen {
-                padding: 30px 20px;
-            }
-
-            .chat-init-icon {
-                width: 80px;
-                height: 80px;
-                font-size: 40px;
-            }
-
-            .chat-init-screen h3 {
-                font-size: 1.3em;
-            }
-
-            .start-chat-button {
-                padding: 12px 30px;
-                font-size: 1em;
+                border-radius: 10px;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.6em;
+                font-size: 1.5em;
+            }
+
+            .chat-title h2 {
+                font-size: 1.1em;
+            }
+
+            .start-chat-btn {
+                font-size: 1em;
+                padding: 12px 25px;
             }
 
             .tab {
                 font-size: 14px;
-                padding: 12px 20px;
-                min-width: 130px;
-            }
-
-            .chat-window {
-                height: calc(100vh - 140px);
+                padding: 10px 15px;
+                min-width: 120px;
             }
         }
     </style>
@@ -613,48 +516,96 @@
             </div>
         </header>
 
-        <!-- FEATURES SECTION -->
-        <div class="features-section">
-            <h2 class="features-title">
-                <i class="fas fa-star"></i>
-                Recursos do Assistente IA
-            </h2>
+        <!-- CHAT DO N8N -->
+        <div class="chat-section">
+            <div class="chat-header">
+                <div class="chat-header-content">
+                    <div class="chat-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="chat-title">
+                        <h2>
+                            <i class="fas fa-comments"></i>
+                            Assistente de Apostas com IA
+                        </h2>
+                        <p>Receba indicações e análises personalizadas para suas apostas</p>
+                    </div>
+                    <div class="chat-status">
+                        <div class="status-dot"></div>
+                        <span>Online</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3>Análise Estatística</h3>
-                    <p>Dados completos de times, jogadores e estatísticas detalhadas</p>
+                    <div class="feature-text">
+                        <h4>Análise Estatística</h4>
+                        <p>Dados completos de times e jogadores</p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-history"></i></div>
-                    <h3>Histórico de Confrontos</h3>
-                    <p>Análise profunda de jogos anteriores entre times</p>
+                    <div class="feature-text">
+                        <h4>Histórico de Confrontos</h4>
+                        <p>Análise de jogos anteriores entre times</p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
-                    <h3>Palpites Precisos</h3>
-                    <p>Indicações com alta probabilidade de acerto</p>
+                    <div class="feature-text">
+                        <h4>Palpites Precisos</h4>
+                        <p>Indicações com maior probabilidade</p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                    <h3>Alertas Importantes</h3>
-                    <p>Lesões, desfalques e notícias em tempo real</p>
+                    <div class="feature-text">
+                        <h4>Alertas Importantes</h4>
+                        <p>Lesões e desfalques em tempo real</p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-coins"></i></div>
-                    <h3>Análise de Odds</h3>
-                    <p>Melhores oportunidades de apostas do mercado</p>
+                    <div class="feature-text">
+                        <h4>Análise de Odds</h4>
+                        <p>Melhores oportunidades de apostas</p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Estratégias Personalizadas</h3>
-                    <p>Recomendações adaptadas ao seu perfil</p>
+                    <div class="feature-text">
+                        <h4>Estratégias Personalizadas</h4>
+                        <p>Recomendações para seu perfil</p>
+                    </div>
                 </div>
+            </div>
+
+            <div class="chat-container">
+                <!-- Botão para Iniciar Chat -->
+                <div id="chatInitButton" class="chat-init-wrapper">
+                    <button class="start-chat-btn" onclick="initializeChat()">
+                        <i class="fas fa-comments"></i>
+                        <span>Iniciar Conversa com o Assistente</span>
+                    </button>
+                    <p class="chat-info">Clique para começar a receber análises e palpites personalizados</p>
+                </div>
+                
+                <!-- IFRAME DO CHAT N8N -->
+                <iframe 
+                    id="chatIframe"
+                    src="https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat" 
+                    width="100%" 
+                    height="650"
+                    allow="clipboard-write; microphone"
+                    style="border: none; border-radius: 0; display: none;">
+                </iframe>
             </div>
         </div>
 
@@ -704,77 +655,52 @@
         </div>
     </div>
 
-    <!-- CHAT FLUTUANTE -->
-    <div class="chat-bubble">
-        <button class="chat-button" onclick="toggleChat()">
-            <i class="fas fa-futbol"></i>
-            <span class="chat-badge">IA</span>
-        </button>
-    </div>
-
-    <!-- JANELA DO CHAT -->
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-window-header">
-            <div class="chat-header-info">
-                <div class="chat-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="chat-header-text">
-                    <h3>Assistente DarlanBets</h3>
-                    <p><i class="fas fa-circle" style="color: #4caf50; font-size: 8px;"></i> Online</p>
-                </div>
-            </div>
-            <button class="chat-close" onclick="toggleChat()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="chat-window-body">
-            <div id="chatInitScreen" class="chat-init-screen">
-                <div class="chat-init-icon">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <h3>Assistente de Apostas IA</h3>
-                <p>Receba análises detalhadas, palpites e estratégias personalizadas para suas apostas esportivas</p>
-                <button class="start-chat-button" onclick="initializeChat()">
-                    <i class="fas fa-play"></i> Iniciar Conversa
-                </button>
-            </div>
-            <iframe 
-                id="chatIframe"
-                src="https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat" 
-                allow="clipboard-write; microphone"
-                style="display: none;">
-            </iframe>
-        </div>
-    </div>
-
     <script>
-        // Toggle Chat Window
-        function toggleChat() {
-            const chatWindow = document.getElementById('chatWindow');
-            chatWindow.classList.toggle('active');
+        // Armazenar sessionId em memória (compatível com mobile)
+        let currentSessionId = null;
+
+        // Função para gerar Session ID único
+        function generateSessionId() {
+            if (!currentSessionId) {
+                const timestamp = Date.now();
+                const random = Math.random().toString(36).substring(2, 11);
+                const userAgent = navigator.userAgent.substring(0, 20).replace(/[^a-zA-Z0-9]/g, '');
+                currentSessionId = `session_${timestamp}_${random}_${userAgent}`;
+            }
+            return currentSessionId;
         }
 
-        // Inicializar Chat
+        // Função para inicializar o chat
         function initializeChat() {
-            const initScreen = document.getElementById('chatInitScreen');
+            const initButton = document.getElementById('chatInitButton');
             const chatIframe = document.getElementById('chatIframe');
             
-            // Esconder tela inicial e mostrar iframe
-            initScreen.style.display = 'none';
+            // Gerar sessionId antes de mostrar o iframe
+            const sessionId = generateSessionId();
+            console.log('🔑 Session ID gerado:', sessionId);
+            
+            // Esconder botão e mostrar iframe
+            initButton.style.display = 'none';
             chatIframe.style.display = 'block';
             
-            // Enviar mensagem inicial
+            // Aguardar o iframe carregar
             chatIframe.onload = function() {
+                console.log('✅ Chat iframe carregado com sucesso');
+                
                 setTimeout(() => {
                     try {
                         const message = "Olá! Gostaria de receber análises e palpites para apostas.";
                         
+                        // Tentar enviar via postMessage
                         chatIframe.contentWindow.postMessage({
                             type: 'sendMessage',
-                            message: message
+                            message: message,
+                            sessionId: sessionId
                         }, '*');
                         
+                        console.log('💬 Mensagem inicial enviada via postMessage');
+                        
+                        // Tentar também via fetch como alternativa
                         fetch('https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat', {
                             method: 'POST',
                             headers: {
@@ -782,28 +708,31 @@
                             },
                             body: JSON.stringify({
                                 action: 'sendMessage',
-                                sessionId: getSessionId(),
+                                sessionId: sessionId,
                                 chatInput: message
                             })
-                        }).catch(err => console.log('Chat iniciado'));
+                        })
+                        .then(response => {
+                            console.log('✅ Resposta do webhook recebida');
+                            return response.json();
+                        })
+                        .catch(err => {
+                            console.log('ℹ️ Fetch alternativo executado');
+                        });
+                        
                     } catch (e) {
-                        console.log('Chat carregado');
+                        console.log('⚠️ Erro ao enviar mensagem:', e);
                     }
-                }, 1000);
+                }, 1500);
+            };
+            
+            // Log de erro caso o iframe não carregue
+            chatIframe.onerror = function() {
+                console.error('❌ Erro ao carregar o iframe do chat');
             };
         }
 
-        // Session ID
-        function getSessionId() {
-            let sessionId = localStorage.getItem('darlanbet_session');
-            if (!sessionId) {
-                sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('darlanbet_session', sessionId);
-            }
-            return sessionId;
-        }
-
-        // Alternar Seções
+        // Função para alternar seções
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.section');
             const tabs = document.querySelectorAll('.tab');
@@ -815,7 +744,7 @@
             event.target.classList.add('active');
         }
 
-        // Carregar ScoreBat
+        // Carregar script do ScoreBat
         (function(d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
@@ -825,7 +754,10 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'scorebat-jssdk'));
 
-        console.log('⚽ DarlanBets - Sistema carregado com sucesso!');
+        // Log de inicialização
+        console.log('✅ DarlanBets - Sistema carregado');
+        console.log('📱 User Agent:', navigator.userAgent.substring(0, 50));
+        console.log('🌐 Plataforma:', navigator.platform);
     </script>
 </body>
 </html>
