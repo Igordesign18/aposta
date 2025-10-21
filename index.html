@@ -723,7 +723,7 @@
                         style="width:100%;height:800px;overflow:hidden;display:block;">
                 </iframe>
             </div>
-        </div>
+                        </div>
 
     </div>
 
@@ -793,22 +793,43 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        message: message,
-                        sessionId: getSessionId()
+                        action: 'sendMessage',
+                        sessionId: getSessionId(),
+                        chatInput: message
                     })
                 });
 
-                const data = await response.json();
                 hideTyping();
 
-                // Adicionar resposta do bot
-                const botResponse = data.response || data.message || 'Desculpe, não consegui processar sua mensagem.';
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Resposta do N8N:', data);
+
+                // Tentar diferentes formatos de resposta do N8N
+                let botResponse = data.output || 
+                                 data.response || 
+                                 data.message || 
+                                 data.text ||
+                                 data.reply ||
+                                 (typeof data === 'string' ? data : null);
+
+                // Se não encontrar resposta válida
+                if (!botResponse || botResponse.trim() === '') {
+                    console.warn('Resposta vazia do webhook. Dados recebidos:', data);
+                    botResponse = 'Recebi sua mensagem! No momento estou processando as informações. Tente fazer outra pergunta.';
+                }
+
                 addMessage(botResponse, false);
 
             } catch (error) {
                 console.error('Erro ao enviar mensagem:', error);
                 hideTyping();
-                addMessage('Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.', false);
+                
+                // Mensagem de erro mais amigável
+                addMessage('Desculpe, estou com problemas de conexão no momento. Por favor, tente novamente em alguns instantes. 🔄', false);
             } finally {
                 sendButton.disabled = false;
                 chatInput.focus();
