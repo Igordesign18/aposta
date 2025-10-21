@@ -2,115 +2,126 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarlanBets - Chat de Apostas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e0f 0%, #1a2a1e 100%);
             min-height: 100vh;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d1f13 100%);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.1);
+            border-bottom: 2px solid #00ff00;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff00;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .logo span {
+            color: #ffffff;
         }
 
         .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
-            padding: 10px;
+            padding: 20px;
         }
 
-        /* Melhorado para mobile com altura dinâmica */
-        .chat-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            height: calc(100vh - 20px);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header otimizado para mobile */
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .header p {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        /* Tabs responsivas para mobile */
-        .tabs {
-            display: flex;
-            background: #f7fafc;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 12px 8px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            color: #64748b;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab:hover {
-            background: #edf2f7;
-        }
-
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-            background: white;
-        }
-
-        .tab-content {
-            display: none;
-            flex: 1;
+        .matches-section {
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #00ff00;
+            max-height: 200px;
             overflow-y: auto;
-            padding: 12px;
         }
 
-        .tab-content.active {
+        .matches-title {
+            color: #00ff00;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .match-card {
+            background: rgba(13, 31, 19, 0.6);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00ff00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .match-card:hover {
+            background: rgba(13, 31, 19, 0.9);
+            transform: translateX(5px);
+        }
+
+        .match-teams {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .match-info {
+            color: #00ff00;
+            font-size: 12px;
+        }
+
+        .loading {
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            flex: 1;
             display: flex;
             flex-direction: column;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #00ff00;
+            box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
         }
 
         .messages {
             flex: 1;
             overflow-y: auto;
-            padding: 12px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            -webkit-overflow-scrolling: touch;
+            gap: 15px;
         }
 
         .message {
             display: flex;
-            gap: 8px;
-            animation: slideIn 0.3s ease-out;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
@@ -128,683 +139,409 @@
             flex-direction: row-reverse;
         }
 
-        /* Avatar menor para mobile */
         .message-avatar {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            color: #000;
+            font-weight: bold;
             flex-shrink: 0;
         }
 
         .message.user .message-avatar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
         }
 
-        .message.bot .message-avatar {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        /* Mensagens responsivas para mobile */
         .message-content {
-            max-width: 75%;
-            padding: 10px 14px;
-            border-radius: 12px;
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            background: rgba(13, 31, 19, 0.8);
+            color: #ffffff;
+            border: 1px solid #00ff00;
             line-height: 1.5;
-            font-size: 14px;
-            word-wrap: break-word;
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-bottom-right-radius: 4px;
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
         }
 
-        .message.bot .message-content {
-            background: #f7fafc;
-            color: #1a202c;
-            border-bottom-left-radius: 4px;
-        }
-
-        /* Input otimizado para mobile */
-        .input-container {
-            padding: 12px;
-            background: #f7fafc;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .input-wrapper {
+        .input-area {
+            padding: 20px;
+            background: rgba(13, 31, 19, 0.9);
+            border-top: 1px solid #00ff00;
             display: flex;
-            gap: 8px;
-            max-width: 100%;
+            gap: 10px;
         }
 
-        .input-wrapper input {
+        .input-field {
             flex: 1;
-            padding: 12px 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 12px 16px;
+            border: 2px solid #00ff00;
+            border-radius: 25px;
+            background: rgba(26, 26, 26, 0.8);
+            color: #ffffff;
+            font-size: 16px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
         }
 
-        .input-wrapper input:focus {
-            border-color: #667eea;
+        .input-field:focus {
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        .input-wrapper button {
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .send-button {
+            padding: 12px 24px;
             border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 14px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
+            color: #000;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-size: 16px;
         }
 
-        .input-wrapper button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
         }
 
-        .input-wrapper button:disabled {
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Cards de partida responsivos */
-        .match-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .match-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        ::-webkit-scrollbar-track {
+            background: rgba(26, 26, 26, 0.5);
         }
 
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 8px;
+        ::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
         }
 
-        .match-status {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00aa00;
         }
 
-        .match-status.live {
-            background: #fee;
-            color: #c00;
-        }
-
-        .match-status.scheduled {
-            background: #eff6ff;
-            color: #2563eb;
-        }
-
-        .match-teams {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 12px 0;
-        }
-
-        .team {
-            flex: 1;
-            text-align: center;
-            min-width: 0;
-        }
-
-        .team-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 4px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .score {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin: 0 12px;
-            flex-shrink: 0;
-        }
-
-        .match-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 30px 20px;
-            color: #64748b;
-        }
-
-        .spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 12px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            background: #fee;
-            color: #c00;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 13px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
-        }
-
-        .empty-state svg {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 12px;
-            opacity: 0.3;
-        }
-
-        .empty-state h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .empty-state p {
-            font-size: 13px;
-        }
-
-        /* Media queries para tablets e desktops */
-        @media (min-width: 768px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 20px;
-            }
-
-            .chat-container {
-                height: 90vh;
-            }
-
-            .header h1 {
-                font-size: 28px;
-                margin-bottom: 8px;
-            }
-
-            .header p {
-                font-size: 14px;
+                padding: 10px;
             }
 
             .header {
-                padding: 24px;
+                padding: 12px 15px;
             }
 
-            .tab {
-                padding: 16px;
-                font-size: 14px;
-            }
-
-            .tab-content {
-                padding: 20px;
-            }
-
-            .messages {
-                padding: 20px;
-                gap: 16px;
-            }
-
-            .message-avatar {
-                width: 40px;
-                height: 40px;
+            .logo {
                 font-size: 20px;
             }
 
-            .message-content {
-                max-width: 70%;
-                padding: 12px 16px;
-                font-size: 15px;
+            .matches-section {
+                padding: 10px;
+                max-height: 150px;
             }
 
-            .input-container {
-                padding: 20px;
-            }
-
-            .input-wrapper {
-                gap: 12px;
-            }
-
-            .input-wrapper button {
-                padding: 12px 24px;
-                font-size: 15px;
-            }
-
-            .match-card {
-                padding: 16px;
-                margin-bottom: 12px;
-            }
-
-            .team-name {
+            .matches-title {
                 font-size: 16px;
             }
 
-            .score {
-                font-size: 32px;
-                margin: 0 20px;
+            .message-content {
+                max-width: 85%;
+                padding: 10px 14px;
+                font-size: 14px;
             }
 
-            .match-status {
-                font-size: 12px;
-                padding: 4px 12px;
+            .message-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
             }
 
-            .match-info {
-                font-size: 12px;
+            .input-area {
+                padding: 12px;
             }
 
-            .empty-state {
-                padding: 60px 20px;
+            .input-field {
+                font-size: 14px;
+                padding: 10px 14px;
             }
 
-            .empty-state svg {
-                width: 80px;
-                height: 80px;
+            .send-button {
+                padding: 10px 20px;
+                font-size: 14px;
             }
+        }
 
-            .empty-state h3 {
+        @media (max-width: 480px) {
+            .logo {
                 font-size: 18px;
             }
 
-            .empty-state p {
-                font-size: 14px;
+            .matches-section {
+                max-height: 120px;
+            }
+
+            .match-card {
+                padding: 8px;
+            }
+
+            .match-teams {
+                font-size: 12px;
+            }
+
+            .match-info {
+                font-size: 11px;
+            }
+
+            .send-button {
+                padding: 10px 16px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="logo">
+            Darlan<span>Bets</span> ⚽
+        </div>
+    </div>
+
     <div class="container">
+        <div class="matches-section" id="matchesSection">
+            <div class="matches-title">🔴 Jogos ao Vivo e Próximos</div>
+            <div id="matchesList">
+                <div class="loading">Carregando jogos...</div>
+            </div>
+        </div>
+
         <div class="chat-container">
-            <!-- Header -->
-            <div class="header">
-                <h1>⚽ DarlanBets</h1>
-                <p>Seu assistente inteligente de apostas esportivas</p>
-            </div>
-
-            <!-- Tabs -->
-            <div class="tabs">
-                <div class="tab active" data-tab="chat">💬 Chat</div>
-                <div class="tab" data-tab="live">🔴 Ao Vivo</div>
-                <div class="tab" data-tab="tips">📊 Dicas</div>
-            </div>
-
-            <!-- Chat Tab -->
-            <div class="tab-content active" id="chat-tab">
-                <div class="messages" id="messages">
-                    <div class="message bot">
-                        <div class="message-avatar">🤖</div>
-                        <div class="message-content">
-                            Olá! Sou seu assistente de apostas. Como posso ajudar você hoje?
-                        </div>
-                    </div>
-                </div>
-                <div class="input-container">
-                    <div class="input-wrapper">
-                        <input 
-                            type="text" 
-                            id="messageInput" 
-                            placeholder="Digite sua mensagem..."
-                            onkeypress="handleKeyPress(event)"
-                        />
-                        <button onclick="sendMessage()" id="sendButton">Enviar</button>
+            <div class="messages" id="messages">
+                <div class="message">
+                    <div class="message-avatar">DB</div>
+                    <div class="message-content">
+                        Bem-vindo ao DarlanBets! 🎰<br>
+                        Como posso ajudar você hoje? Pergunte sobre odds, jogos ou faça suas apostas!
                     </div>
                 </div>
             </div>
 
-            <!-- Live Tab -->
-            <div class="tab-content" id="live-tab">
-                <div id="liveMatches"></div>
-            </div>
-
-            <!-- Tips Tab -->
-            <div class="tab-content" id="tips-tab">
-                <div id="tipsMatches"></div>
+            <div class="input-area">
+                <input 
+                    type="text" 
+                    class="input-field" 
+                    id="messageInput" 
+                    placeholder="Digite sua mensagem..."
+                    onkeypress="handleKeyPress(event)"
+                >
+                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                    Enviar
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // ============================================
-        // ============================================
-        const CONFIG = {
-            N8N_WEBHOOK_URL: 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat',
-            FOOTBALL_API_KEY: '9d137eb74f304bc5a79bd6fd6128b2a1',
-            FOOTBALL_API_URL: 'https://api.football-data.org/v4'
-        };
+        const WEBHOOK_URL = 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat';
+        const FOOTBALL_API_URL = 'https://api.football-data.org/v4/matches';
+        const API_TOKEN = '9d137eb74f304bc5a79bd6fd6128b2a1';
 
-        // ============================================
-        // GERENCIAMENTO DE ABAS
-        // ============================================
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.dataset.tab;
+        let conversationHistory = [];
+
+        async function loadMatches() {
+            try {
+                // Usando um proxy CORS para acessar a API
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const encodedUrl = encodeURIComponent(FOOTBALL_API_URL);
                 
-                // Atualizar abas ativas
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                tab.classList.add('active');
-                document.getElementById(`${tabName}-tab`).classList.add('active');
-                
-                // Carregar dados quando necessário
-                if (tabName === 'live') {
-                    loadLiveMatches();
-                } else if (tabName === 'tips') {
-                    loadTipsMatches();
+                const response = await fetch(proxyUrl + encodedUrl, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar jogos');
                 }
-            });
-        });
 
-        // ============================================
-        // CHAT FUNCTIONALITY
-        // ============================================
+                const data = await response.json();
+                displayMatches(data.matches);
+            } catch (error) {
+                console.error('Erro ao carregar jogos:', error);
+                // Exibir jogos de exemplo se a API falhar
+                displayExampleMatches();
+            }
+        }
+
+        function displayExampleMatches() {
+            const exampleMatches = [
+                {
+                    homeTeam: { name: 'Real Madrid' },
+                    awayTeam: { name: 'Barcelona' },
+                    status: 'IN_PLAY',
+                    competition: { name: 'La Liga' },
+                    utcDate: new Date().toISOString()
+                },
+                {
+                    homeTeam: { name: 'Manchester City' },
+                    awayTeam: { name: 'Liverpool' },
+                    status: 'SCHEDULED',
+                    competition: { name: 'Premier League' },
+                    utcDate: new Date(Date.now() + 3600000).toISOString()
+                },
+                {
+                    homeTeam: { name: 'PSG' },
+                    awayTeam: { name: 'Marseille' },
+                    status: 'SCHEDULED',
+                    competition: { name: 'Ligue 1' },
+                    utcDate: new Date(Date.now() + 7200000).toISOString()
+                }
+            ];
+            displayMatches(exampleMatches);
+        }
+
+        function displayMatches(matches) {
+            const matchesList = document.getElementById('matchesList');
+            
+            if (!matches || matches.length === 0) {
+                matchesList.innerHTML = '<div class="loading">Nenhum jogo disponível</div>';
+                return;
+            }
+
+            const liveAndUpcoming = matches.filter(match => 
+                match.status === 'IN_PLAY' || match.status === 'SCHEDULED'
+            ).slice(0, 10);
+
+            matchesList.innerHTML = liveAndUpcoming.map(match => {
+                const date = new Date(match.utcDate);
+                const status = match.status === 'IN_PLAY' ? '🔴 AO VIVO' : 
+                              `📅 ${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+                
+                return `
+                    <div class="match-card" onclick="selectMatch('${match.homeTeam.name}', '${match.awayTeam.name}')">
+                        <div class="match-teams">
+                            ${match.homeTeam.name} vs ${match.awayTeam.name}
+                        </div>
+                        <div class="match-info">
+                            ${status} | ${match.competition.name}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectMatch(homeTeam, awayTeam) {
+            const input = document.getElementById('messageInput');
+            input.value = `Quais são as odds para ${homeTeam} vs ${awayTeam}?`;
+            input.focus();
+        }
+
+        function addMessage(content, isUser = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : ''}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? 'U' : 'DB';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(contentDiv);
+            messagesDiv.appendChild(messageDiv);
+            
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const button = document.getElementById('sendButton');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, true);
+            input.value = '';
+            button.disabled = true;
+            
+            conversationHistory.push({
+                role: 'user',
+                content: message
+            });
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        history: conversationHistory,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                let botMessage;
+                
+                if (!response.ok) {
+                    console.error('Erro HTTP:', response.status);
+                    botMessage = 'Desculpe, estou com dificuldades técnicas no momento. 🔧 Mas posso te ajudar com informações sobre apostas! Me pergunte sobre odds, estratégias ou jogos específicos.';
+                } else {
+                    const contentType = response.headers.get('content-type');
+                    let data;
+                    
+                    if (contentType && contentType.includes('application/json')) {
+                        data = await response.json();
+                    } else {
+                        const text = await response.text();
+                        data = { response: text };
+                    }
+                    
+                    botMessage = data.response || data.message || data.output || data.text || 'Recebi sua mensagem! Como posso ajudar com suas apostas?';
+                }
+                
+                conversationHistory.push({
+                    role: 'assistant',
+                    content: botMessage
+                });
+                
+                addMessage(botMessage);
+            } catch (error) {
+                console.error('Erro ao enviar mensagem:', error);
+                const fallbackMessage = 'Estou aqui para ajudar! 🎰 Pergunte-me sobre:\n\n• Odds e probabilidades\n• Análise de jogos\n• Dicas de apostas\n• Estratégias\n\nO que você gostaria de saber?';
+                addMessage(fallbackMessage);
+            } finally {
+                button.disabled = false;
+                input.focus();
+            }
+        }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Adicionar mensagem do usuário
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // Desabilitar botão durante envio
-            const sendButton = document.getElementById('sendButton');
-            sendButton.disabled = true;
-            sendButton.textContent = 'Enviando...';
-            
-            try {
-                // Enviar para n8n webhook
-                const response = await fetch(CONFIG.N8N_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        timestamp: new Date().toISOString(),
-                        userId: getUserId()
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Validar resposta
-                if (data && data.response) {
-                    addMessage(data.response, 'bot');
-                } else if (data && data.message) {
-                    addMessage(data.message, 'bot');
-                } else {
-                    throw new Error('Formato de resposta inválido');
-                }
-                
-            } catch (error) {
-                console.error('Erro ao enviar mensagem:', error);
-                addMessage(
-                    'Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.',
-                    'bot'
-                );
-            } finally {
-                sendButton.disabled = false;
-                sendButton.textContent = 'Enviar';
-            }
-        }
-
-        function addMessage(text, type) {
-            const messagesContainer = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            
-            const avatar = document.createElement('div');
-            avatar.className = 'message-avatar';
-            avatar.textContent = type === 'user' ? '👤' : '🤖';
-            
-            const content = document.createElement('div');
-            content.className = 'message-content';
-            content.textContent = text;
-            
-            messageDiv.appendChild(avatar);
-            messageDiv.appendChild(content);
-            messagesContainer.appendChild(messageDiv);
-            
-            // Scroll para o final
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function getUserId() {
-            // Gerar ou recuperar ID único do usuário
-            let userId = localStorage.getItem('darlanbets_userId');
-            if (!userId) {
-                userId = 'user_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('darlanbets_userId', userId);
-            }
-            return userId;
-        }
-
-        // ============================================
-        // FOOTBALL API - JOGOS AO VIVO
-        // ============================================
-        async function loadLiveMatches() {
-            const container = document.getElementById('liveMatches');
-            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Carregando jogos ao vivo...</p></div>';
-            
-            try {
-                const response = await fetch(`${CONFIG.FOOTBALL_API_URL}/matches?status=LIVE`, {
-                    headers: {
-                        'X-Auth-Token': CONFIG.FOOTBALL_API_KEY
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.matches && data.matches.length > 0) {
-                    displayMatches(data.matches, container, true);
-                } else {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <h3>Nenhum jogo ao vivo no momento</h3>
-                            <p>Volte mais tarde para ver os jogos em andamento</p>
-                        </div>
-                    `;
-                }
-                
-            } catch (error) {
-                console.error('Erro ao carregar jogos ao vivo:', error);
-                container.innerHTML = `
-                    <div class="error-message">
-                        Erro ao carregar jogos ao vivo. Verifique sua conexão e tente novamente.
-                    </div>
-                    <div class="empty-state">
-                        <p>Não foi possível conectar à API de futebol.</p>
-                    </div>
-                `;
-            }
-        }
-
-        // ============================================
-        // FOOTBALL API - PRÓXIMOS JOGOS
-        // ============================================
-        async function loadTipsMatches() {
-            const container = document.getElementById('tipsMatches');
-            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Carregando próximos jogos...</p></div>';
-            
-            try {
-                const today = new Date().toISOString().split('T')[0];
-                const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                
-                const response = await fetch(
-                    `${CONFIG.FOOTBALL_API_URL}/matches?dateFrom=${today}&dateTo=${nextWeek}&status=SCHEDULED`,
-                    {
-                        headers: {
-                            'X-Auth-Token': CONFIG.FOOTBALL_API_KEY
-                        }
-                    }
-                );
-                
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.matches && data.matches.length > 0) {
-                    displayMatches(data.matches, container, false);
-                } else {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            <h3>Nenhum jogo agendado</h3>
-                            <p>Não há jogos programados para os próximos dias</p>
-                        </div>
-                    `;
-                }
-                
-            } catch (error) {
-                console.error('Erro ao carregar próximos jogos:', error);
-                container.innerHTML = `
-                    <div class="error-message">
-                        Erro ao carregar próximos jogos. Verifique sua conexão e tente novamente.
-                    </div>
-                    <div class="empty-state">
-                        <p>Não foi possível conectar à API de futebol.</p>
-                    </div>
-                `;
-            }
-        }
-
-        // ============================================
-        // RENDERIZAÇÃO DE PARTIDAS
-        // ============================================
-        function displayMatches(matches, container, isLive) {
-            container.innerHTML = '';
-            
-            matches.forEach(match => {
-                const card = createMatchCard(match, isLive);
-                container.appendChild(card);
-            });
-        }
-
-        function createMatchCard(match, isLive) {
-            const card = document.createElement('div');
-            card.className = 'match-card';
-            
-            const homeTeam = match.homeTeam?.name || 'Time Casa';
-            const awayTeam = match.awayTeam?.name || 'Time Visitante';
-            const homeScore = match.score?.fullTime?.home ?? '-';
-            const awayScore = match.score?.fullTime?.away ?? '-';
-            const competition = match.competition?.name || 'Competição';
-            const matchDate = new Date(match.utcDate);
-            const formattedDate = matchDate.toLocaleDateString('pt-BR');
-            const formattedTime = matchDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            card.innerHTML = `
-                <div class="match-header">
-                    <span style="font-weight: 600; color: #64748b; font-size: 13px;">${competition}</span>
-                    <span class="match-status ${isLive ? 'live' : 'scheduled'}">
-                        ${isLive ? '🔴 AO VIVO' : '📅 AGENDADO'}
-                    </span>
-                </div>
-                <div class="match-teams">
-                    <div class="team">
-                        <div class="team-name">${homeTeam}</div>
-                    </div>
-                    <div class="score">${homeScore} - ${awayScore}</div>
-                    <div class="team">
-                        <div class="team-name">${awayTeam}</div>
-                    </div>
-                </div>
-                <div class="match-info">
-                    <span>📅 ${formattedDate}</span>
-                    <span>🕐 ${formattedTime}</span>
-                </div>
-            `;
-            
-            return card;
-        }
-
-        // ============================================
-        // INICIALIZAÇÃO
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DarlanBets inicializado com sucesso!');
-            
-            // Focar no input de mensagem
-            document.getElementById('messageInput').focus();
-        });
-
-        // Auto-atualizar jogos ao vivo a cada 30 segundos
-        setInterval(() => {
-            const liveTab = document.getElementById('live-tab');
-            if (liveTab.classList.contains('active')) {
-                loadLiveMatches();
-            }
-        }, 30000);
+        loadMatches();
+        setInterval(loadMatches, 60000);
     </script>
 </body>
 </html>
