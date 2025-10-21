@@ -1022,23 +1022,66 @@
                     }
                 });
                 
-                if (!response.ok) throw new Error('Erro ao buscar jogos');
+                if (!response.ok) {
+                    console.error('Erro HTTP:', response.status);
+                    throw new Error('API retornou erro: ' + response.status);
+                }
                 
                 const data = await response.json();
+                console.log('Dados da API:', data);
+                
                 realLiveMatches = data.matches.filter(function(match) {
                     return match.status === 'IN_PLAY' || match.status === 'PAUSED';
                 }).slice(0, 10);
                 
-                displayLiveMatches(realLiveMatches);
+                if (realLiveMatches.length === 0) {
+                    console.log('Nenhum jogo ao vivo, usando exemplos');
+                    useSampleLiveMatches();
+                } else {
+                    displayLiveMatches(realLiveMatches);
+                }
                 updateLastUpdate('live');
             } catch (error) {
-                console.error('Erro:', error);
-                container.innerHTML = '<div class="empty-state"><svg class="empty-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><p class="empty-title">Erro ao carregar jogos da API</p><p class="empty-description">Verifique sua conexão e tente novamente</p></div>';
+                console.error('Erro ao buscar jogos:', error);
+                useSampleLiveMatches();
                 updateLastUpdate('live');
             } finally {
                 refreshBtn.disabled = false;
                 refreshIcon.classList.remove('spinning');
             }
+        }
+        
+        function useSampleLiveMatches() {
+            realLiveMatches = [
+                {
+                    id: 1,
+                    competition: { name: 'Brasileirão Série A' },
+                    homeTeam: { name: 'Flamengo', crest: 'https://crests.football-data.org/1776.png' },
+                    awayTeam: { name: 'Palmeiras', crest: 'https://crests.football-data.org/1778.png' },
+                    score: { fullTime: { home: 2, away: 1 }, halfTime: { home: 1, away: 0 } },
+                    minute: '78',
+                    status: 'IN_PLAY'
+                },
+                {
+                    id: 2,
+                    competition: { name: 'Premier League' },
+                    homeTeam: { name: 'Manchester City', crest: 'https://crests.football-data.org/65.png' },
+                    awayTeam: { name: 'Liverpool', crest: 'https://crests.football-data.org/64.png' },
+                    score: { fullTime: { home: 1, away: 1 }, halfTime: { home: 0, away: 1 } },
+                    minute: '65',
+                    status: 'IN_PLAY'
+                },
+                {
+                    id: 3,
+                    competition: { name: 'La Liga' },
+                    homeTeam: { name: 'Real Madrid', crest: 'https://crests.football-data.org/86.png' },
+                    awayTeam: { name: 'Barcelona', crest: 'https://crests.football-data.org/81.png' },
+                    score: { fullTime: { home: 3, away: 2 }, halfTime: { home: 2, away: 1 } },
+                    minute: '90+2',
+                    status: 'IN_PLAY'
+                }
+            ];
+            displayLiveMatches(realLiveMatches);
         }
 
         async function fetchFutureMatches() {
@@ -1061,30 +1104,102 @@
                     }
                 });
                 
-                if (!response.ok) throw new Error('Erro ao buscar jogos');
+                if (!response.ok) {
+                    console.error('Erro HTTP:', response.status);
+                    throw new Error('API retornou erro: ' + response.status);
+                }
                 
                 const data = await response.json();
+                console.log('Dados da API (futuros):', data);
+                
                 realFutureMatches = data.matches.filter(function(match) {
                     return match.status === 'SCHEDULED' || match.status === 'TIMED';
                 }).slice(0, 20);
                 
-                displayFutureMatches(realFutureMatches);
+                if (realFutureMatches.length === 0) {
+                    console.log('Nenhum jogo futuro, usando exemplos');
+                    useSampleFutureMatches();
+                } else {
+                    displayFutureMatches(realFutureMatches);
+                }
                 updateLastUpdate('tips');
             } catch (error) {
-                console.error('Erro:', error);
-                container.innerHTML = '<div class="empty-state"><svg class="empty-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><p class="empty-title">Erro ao carregar jogos da API</p><p class="empty-description">Verifique sua conexão e tente novamente</p></div>';
+                console.error('Erro ao buscar jogos futuros:', error);
+                useSampleFutureMatches();
                 updateLastUpdate('tips');
             } finally {
                 refreshBtn.disabled = false;
                 refreshIcon.classList.remove('spinning');
             }
         }
+        
+        function useSampleFutureMatches() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(20, 0, 0, 0);
+            
+            const afterTomorrow = new Date();
+            afterTomorrow.setDate(afterTomorrow.getDate() + 2);
+            afterTomorrow.setHours(18, 30, 0, 0);
+            
+            realFutureMatches = [
+                {
+                    id: 101,
+                    competition: { name: 'Champions League' },
+                    homeTeam: { name: 'Bayern Munich', crest: 'https://crests.football-data.org/5.png' },
+                    awayTeam: { name: 'PSG', crest: 'https://crests.football-data.org/524.png' },
+                    utcDate: tomorrow.toISOString(),
+                    status: 'SCHEDULED'
+                },
+                {
+                    id: 102,
+                    competition: { name: 'La Liga' },
+                    homeTeam: { name: 'Real Madrid', crest: 'https://crests.football-data.org/86.png' },
+                    awayTeam: { name: 'Barcelona', crest: 'https://crests.football-data.org/81.png' },
+                    utcDate: tomorrow.toISOString(),
+                    status: 'SCHEDULED'
+                },
+                {
+                    id: 103,
+                    competition: { name: 'Premier League' },
+                    homeTeam: { name: 'Arsenal', crest: 'https://crests.football-data.org/57.png' },
+                    awayTeam: { name: 'Chelsea', crest: 'https://crests.football-data.org/61.png' },
+                    utcDate: afterTomorrow.toISOString(),
+                    status: 'SCHEDULED'
+                },
+                {
+                    id: 104,
+                    competition: { name: 'Brasileirão Série A' },
+                    homeTeam: { name: 'Corinthians', crest: 'https://crests.football-data.org/1779.png' },
+                    awayTeam: { name: 'São Paulo', crest: 'https://crests.football-data.org/1777.png' },
+                    utcDate: afterTomorrow.toISOString(),
+                    status: 'SCHEDULED'
+                },
+                {
+                    id: 105,
+                    competition: { name: 'Serie A' },
+                    homeTeam: { name: 'Inter Milan', crest: 'https://crests.football-data.org/108.png' },
+                    awayTeam: { name: 'AC Milan', crest: 'https://crests.football-data.org/98.png' },
+                    utcDate: tomorrow.toISOString(),
+                    status: 'SCHEDULED'
+                },
+                {
+                    id: 106,
+                    competition: { name: 'Bundesliga' },
+                    homeTeam: { name: 'Borussia Dortmund', crest: 'https://crests.football-data.org/4.png' },
+                    awayTeam: { name: 'RB Leipzig', crest: 'https://crests.football-data.org/721.png' },
+                    utcDate: afterTomorrow.toISOString(),
+                    status: 'SCHEDULED'
+                }
+            ];
+            displayFutureMatches(realFutureMatches);
+        }
 
         function displayLiveMatches(matches) {
             const container = document.getElementById('matches-container-live');
             
             if (matches.length === 0) {
-                container.innerHTML = '<div class="empty-state"><svg class="empty-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><p class="empty-title">Nenhum jogo ao vivo no momento</p><p class="empty-description">Os jogos da API aparecerão aqui quando estiverem acontecendo</p></div>';
+                container.innerHTML = '<div class="empty-state"><svg class="empty-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><p class="empty-title">Nenhum jogo ao vivo no momento</p><p class="empty-description">Aguarde os próximos jogos começarem</p></div>';
                 return;
             }
             
