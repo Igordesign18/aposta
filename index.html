@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarlanBets - Chat de Apostas</title>
+    <title>Placar de Jogos - Tempo Real</title>
     <style>
         * {
             margin: 0;
@@ -13,547 +13,675 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0e0f 0%, #1a2a1e 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0d1f13 100%);
-            padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.1);
-            border-bottom: 2px solid #00ff00;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00ff00;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        .logo span {
-            color: #ffffff;
+            padding: 20px;
         }
 
         .container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             max-width: 1200px;
-            width: 100%;
             margin: 0 auto;
-            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .league {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.live {
+            background: #ff4757;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status.finished {
+            background: #2ed573;
+            color: white;
+        }
+
+        .status.scheduled {
+            background: #ffa502;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .match {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 20px;
         }
 
-        .matches-section {
-            background: rgba(26, 26, 26, 0.9);
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid #00ff00;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .matches-title {
-            color: #00ff00;
-            font-size: 18px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .match-card {
-            background: rgba(13, 31, 19, 0.6);
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 3px solid #00ff00;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .match-card:hover {
-            background: rgba(13, 31, 19, 0.9);
-            transform: translateX(5px);
-        }
-
-        .match-teams {
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .match-info {
-            color: #00ff00;
-            font-size: 12px;
-        }
-
-        .loading {
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .chat-container {
+        .team {
             flex: 1;
             display: flex;
-            flex-direction: column;
-            background: rgba(26, 26, 26, 0.9);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #00ff00;
-            box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
-            min-height: 500px;
-        }
-
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 15px;
         }
 
-        .message {
-            display: flex;
-            gap: 10px;
-            animation: slideIn 0.3s ease;
+        .team.home {
+            justify-content: flex-start;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.user {
+        .team.away {
+            justify-content: flex-end;
             flex-direction: row-reverse;
         }
 
-        .message-avatar {
-            width: 40px;
-            height: 40px;
+        .team-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 50%;
-            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #000;
+            color: white;
             font-weight: bold;
-            flex-shrink: 0;
-            font-size: 16px;
+            font-size: 20px;
         }
 
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+        .team-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
         }
 
-        .message-content {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 15px;
-            background: rgba(13, 31, 19, 0.8);
-            color: #ffffff;
-            border: 1px solid #00ff00;
-            line-height: 1.5;
-            word-wrap: break-word;
-        }
-
-        .message.user .message-content {
-            background: rgba(0, 255, 0, 0.2);
-            border-color: #00ff00;
-        }
-
-        .message.typing .message-content {
-            background: rgba(13, 31, 19, 0.6);
-            font-style: italic;
-            color: #00ff00;
-        }
-
-        .input-area {
-            padding: 20px;
-            background: rgba(13, 31, 19, 0.9);
-            border-top: 1px solid #00ff00;
+        .score-container {
             display: flex;
             gap: 10px;
-        }
-
-        .input-field {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #00ff00;
-            border-radius: 25px;
-            background: rgba(26, 26, 26, 0.8);
-            color: #ffffff;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .input-field:focus {
-            border-color: #00ff00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-        }
-
-        .input-field:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .send-button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
-            color: #000;
+            align-items: center;
+            font-size: 32px;
             font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
+            color: #333;
         }
 
-        .send-button:hover:not(:disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        .score {
+            min-width: 50px;
+            text-align: center;
         }
 
-        .send-button:active:not(:disabled) {
-            transform: scale(0.95);
+        .vs {
+            font-size: 20px;
+            color: #999;
+            font-weight: normal;
         }
 
-        .send-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .game-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 14px;
         }
 
-        ::-webkit-scrollbar {
+        .live-indicator {
+            display: inline-block;
             width: 8px;
+            height: 8px;
+            background: #ff4757;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: blink 1s infinite;
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(26, 26, 26, 0.5);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #00ff00;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00aa00;
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
+            .match {
+                flex-direction: column;
+                gap: 15px;
             }
 
-            .header {
-                padding: 12px 15px;
+            .team {
+                width: 100%;
+                justify-content: center !important;
+                flex-direction: row !important;
             }
 
-            .logo {
-                font-size: 20px;
-            }
-
-            .matches-section {
-                padding: 10px;
-                max-height: 150px;
-            }
-
-            .matches-title {
-                font-size: 16px;
-            }
-
-            .message-content {
-                max-width: 85%;
-                padding: 10px 14px;
-                font-size: 14px;
-            }
-
-            .message-avatar {
-                width: 35px;
-                height: 35px;
-                font-size: 14px;
-            }
-
-            .input-area {
-                padding: 12px;
-            }
-
-            .input-field {
-                font-size: 14px;
-                padding: 10px 14px;
-            }
-
-            .send-button {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-
-            .chat-container {
-                min-height: 400px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 18px;
-            }
-
-            .matches-section {
-                max-height: 120px;
-            }
-
-            .match-card {
-                padding: 8px;
-            }
-
-            .match-teams {
-                font-size: 12px;
-            }
-
-            .match-info {
-                font-size: 11px;
-            }
-
-            .send-button {
-                padding: 10px 16px;
-            }
-
-            .chat-container {
-                min-height: 350px;
+            .score-container {
+                font-size: 28px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            Darlan<span>Bets</span> ⚽
-        </div>
-    </div>
-
     <div class="container">
-        <div class="matches-section" id="matchesSection">
-            <div class="matches-title">🔴 Jogos ao Vivo e Próximos</div>
-            <div id="matchesList">
-                <div class="loading">Carregando jogos...</div>
-            </div>
+        <header>
+            <h1>⚽ Placar de Jogos</h1>
+            <p>Acompanhe seus jogos favoritos em tempo real</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('live')">Ao Vivo</button>
+            <button class="tab" onclick="showSection('results')">Resultados</button>
+            <button class="tab" onclick="showSection('upcoming')">Próximos Jogos</button>
         </div>
 
-        <div class="chat-container">
-            <div class="messages" id="messages">
-                <div class="message">
-                    <div class="message-avatar">DB</div>
-                    <div class="message-content">
-                        Bem-vindo ao DarlanBets! 🎰<br>
-                        Como posso ajudar você hoje? Pergunte sobre odds, jogos ou faça suas apostas!
+        <div id="live" class="section active">
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Campeonato Brasileiro - Série A</span>
+                    <span class="status live"><span class="live-indicator"></span>AO VIVO - 67'</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">FLA</div>
+                        <div class="team-name">Flamengo</div>
                     </div>
+                    <div class="score-container">
+                        <span class="score">2</span>
+                        <span class="vs">-</span>
+                        <span class="score">1</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">PAL</div>
+                        <div class="team-name">Palmeiras</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📍 Maracanã</span>
+                    <span>👥 62.547 torcedores</span>
                 </div>
             </div>
 
-            <div class="input-area">
-                <input 
-                    type="text" 
-                    class="input-field" 
-                    id="messageInput" 
-                    placeholder="Digite sua mensagem..."
-                    onkeypress="handleKeyPress(event)"
-                >
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
-                    Enviar
-                </button>
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Premier League</span>
+                    <span class="status live"><span class="live-indicator"></span>AO VIVO - 82'</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">MCI</div>
+                        <div class="team-name">Man City</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="score">3</span>
+                        <span class="vs">-</span>
+                        <span class="score">3</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">LIV</div>
+                        <div class="team-name">Liverpool</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📍 Etihad Stadium</span>
+                    <span>⚽ Jogo eletrizante!</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="results" class="section">
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Campeonato Brasileiro - Série A</span>
+                    <span class="status finished">ENCERRADO</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">SAO</div>
+                        <div class="team-name">São Paulo</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="score">2</span>
+                        <span class="vs">-</span>
+                        <span class="score">0</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">COR</div>
+                        <div class="team-name">Corinthians</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📅 Ontem, 20:00</span>
+                    <span>📍 Morumbi</span>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">La Liga</span>
+                    <span class="status finished">ENCERRADO</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">BAR</div>
+                        <div class="team-name">Barcelona</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="score">4</span>
+                        <span class="vs">-</span>
+                        <span class="score">1</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">SEV</div>
+                        <div class="team-name">Sevilla</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📅 Ontem, 16:00</span>
+                    <span>📍 Camp Nou</span>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Copa Libertadores</span>
+                    <span class="status finished">ENCERRADO</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">BOC</div>
+                        <div class="team-name">Boca Juniors</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="score">1</span>
+                        <span class="vs">-</span>
+                        <span class="score">1</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">RIV</div>
+                        <div class="team-name">River Plate</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📅 Sábado, 21:30</span>
+                    <span>📍 La Bombonera</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="upcoming" class="section">
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Campeonato Brasileiro - Série A</span>
+                    <span class="status scheduled">AGENDADO</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">GRE</div>
+                        <div class="team-name">Grêmio</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="vs">vs</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">INT</div>
+                        <div class="team-name">Internacional</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📅 Amanhã, 19:00</span>
+                    <span>📍 Arena do Grêmio</span>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Premier League</span>
+                    <span class="status scheduled">AGENDADO</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">CHE</div>
+                        <div class="team-name">Chelsea</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="vs">vs</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">ARS</div>
+                        <div class="team-name">Arsenal</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📅 Domingo, 14:30</span>
+                    <span>📍 Stamford Bridge</span>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-header">
+                    <span class="league">Bundesliga</span>
+                    <span class="status scheduled">AGENDADO</span>
+                </div>
+                <div class="match">
+                    <div class="team home">
+                        <div class="team-logo">BAY</div>
+                        <div class="team-name">Bayern</div>
+                    </div>
+                    <div class="score-container">
+                        <span class="vs">vs</span>
+                    </div>
+                    <div class="team away">
+                        <div class="team-logo">DOR</div>
+                        <div class="team-name">Dortmund</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span>📅 Domingo, 11:30</span>
+                    <span>📍 Allianz Arena</span>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        const WEBHOOK_URL = 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat';
-        let sessionId = 'session_' + Date.now();
+        // CONFIGURAÇÃO DA API - TheSportsDB (Gratuita!)
+        const API_KEY = '3'; // Chave pública gratuita
+        const API_URL = 'https://www.thesportsdb.com/api/v1/json';
 
-        function loadMatches() {
-            const now = new Date();
-            const matches = [];
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const tabs = document.querySelectorAll('.tab');
             
-            const teams = [
-                { home: 'Real Madrid', away: 'Barcelona', league: 'La Liga 🇪🇸' },
-                { home: 'Manchester City', away: 'Liverpool', league: 'Premier League 🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-                { home: 'PSG', away: 'Marseille', league: 'Ligue 1 🇫🇷' },
-                { home: 'Bayern Munich', away: 'Borussia Dortmund', league: 'Bundesliga 🇩🇪' },
-                { home: 'Juventus', away: 'Inter Milan', league: 'Serie A 🇮🇹' },
-                { home: 'Flamengo', away: 'Palmeiras', league: 'Brasileirão 🇧🇷' },
-                { home: 'Corinthians', away: 'São Paulo', league: 'Brasileirão 🇧🇷' },
-                { home: 'Arsenal', away: 'Chelsea', league: 'Premier League 🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-                { home: 'Atlético Madrid', away: 'Sevilla', league: 'La Liga 🇪🇸' },
-                { home: 'AC Milan', away: 'Napoli', league: 'Serie A 🇮🇹' }
-            ];
+            sections.forEach(section => section.classList.remove('active'));
+            tabs.forEach(tab => tab.classList.remove('active'));
             
-            for (let i = 0; i < 3; i++) {
-                const team = teams[i];
-                matches.push({
-                    homeTeam: { name: team.home },
-                    awayTeam: { name: team.away },
-                    status: 'IN_PLAY',
-                    competition: { name: team.league },
-                    utcDate: new Date(now.getTime() - (30 * 60000)).toISOString(),
-                    score: `${Math.floor(Math.random() * 3)} - ${Math.floor(Math.random() * 3)}`
-                });
-            }
-            
-            for (let i = 3; i < 10; i++) {
-                const team = teams[i];
-                const hoursAhead = i - 2;
-                matches.push({
-                    homeTeam: { name: team.home },
-                    awayTeam: { name: team.away },
-                    status: 'SCHEDULED',
-                    competition: { name: team.league },
-                    utcDate: new Date(now.getTime() + (hoursAhead * 3600000)).toISOString()
-                });
-            }
-            
-            displayMatches(matches);
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        function displayMatches(matches) {
-            const matchesList = document.getElementById('matchesList');
-            
-            if (!matches || matches.length === 0) {
-                matchesList.innerHTML = '<div class="loading">Nenhum jogo disponível</div>';
-                return;
-            }
-
-            matchesList.innerHTML = matches.map(match => {
-                const date = new Date(match.utcDate);
-                let status;
+        // Função para buscar jogos ao vivo (várias ligas)
+        async function fetchLiveMatches() {
+            try {
+                // IDs das principais ligas
+                const leagues = [
+                    '4328', // Premier League
+                    '4335', // La Liga
+                    '4331', // Bundesliga
+                    '4332', // Serie A
+                    '4334', // Ligue 1
+                    '4356', // Brasileirão
+                ];
                 
-                if (match.status === 'IN_PLAY') {
-                    status = `🔴 AO VIVO ${match.score || ''}`;
-                } else {
-                    status = `📅 ${date.toLocaleDateString('pt-BR')} às ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+                let allMatches = [];
+                
+                for (const leagueId of leagues) {
+                    const response = await fetch(`${API_URL}/${API_KEY}/eventsseason.php?id=${leagueId}&s=2024-2025`);
+                    const data = await response.json();
+                    
+                    if (data.events) {
+                        // Filtrar jogos de hoje
+                        const today = new Date().toISOString().split('T')[0];
+                        const todayMatches = data.events.filter(event => 
+                            event.dateEvent === today && 
+                            event.strStatus !== 'Match Finished'
+                        );
+                        allMatches = allMatches.concat(todayMatches);
+                    }
                 }
                 
-                return `
-                    <div class="match-card" onclick="selectMatch('${match.homeTeam.name}', '${match.awayTeam.name}')">
-                        <div class="match-teams">
-                            ${match.homeTeam.name} vs ${match.awayTeam.name}
+                return allMatches.slice(0, 10); // Limitar a 10 jogos
+            } catch (error) {
+                console.error('Erro ao buscar jogos ao vivo:', error);
+                return [];
+            }
+        }
+
+        // Função para buscar últimos resultados
+        async function fetchRecentResults() {
+            try {
+                const leagues = ['4328', '4335', '4331', '4332', '4356'];
+                let allMatches = [];
+                
+                for (const leagueId of leagues) {
+                    const response = await fetch(`${API_URL}/${API_KEY}/eventspastleague.php?id=${leagueId}`);
+                    const data = await response.json();
+                    
+                    if (data.events) {
+                        allMatches = allMatches.concat(data.events);
+                    }
+                }
+                
+                // Ordenar por data e pegar os 8 mais recentes
+                allMatches.sort((a, b) => new Date(b.dateEvent) - new Date(a.dateEvent));
+                return allMatches.slice(0, 8);
+            } catch (error) {
+                console.error('Erro ao buscar resultados:', error);
+                return [];
+            }
+        }
+
+        // Função para buscar próximos jogos
+        async function fetchUpcomingMatches() {
+            try {
+                const leagues = ['4328', '4335', '4331', '4332', '4356'];
+                let allMatches = [];
+                
+                for (const leagueId of leagues) {
+                    const response = await fetch(`${API_URL}/${API_KEY}/eventsnextleague.php?id=${leagueId}`);
+                    const data = await response.json();
+                    
+                    if (data.events) {
+                        allMatches = allMatches.concat(data.events);
+                    }
+                }
+                
+                // Ordenar por data e pegar os 8 próximos
+                allMatches.sort((a, b) => new Date(a.dateEvent) - new Date(b.dateEvent));
+                return allMatches.slice(0, 8);
+            } catch (error) {
+                console.error('Erro ao buscar próximos jogos:', error);
+                return [];
+            }
+        }
+
+        // Função para criar card de jogo
+        function createGameCard(match, type = 'live') {
+            const homeTeam = match.strHomeTeam;
+            const awayTeam = match.strAwayTeam;
+            const homeScore = match.intHomeScore || 0;
+            const awayScore = match.intAwayScore || 0;
+            const league = match.strLeague;
+            const venue = match.strVenue || 'Estádio';
+            
+            // Formatar data
+            const matchDate = new Date(match.dateEvent + 'T' + match.strTime);
+            const formattedDate = matchDate.toLocaleDateString('pt-BR', { 
+                day: '2-digit', 
+                month: '2-digit' 
+            });
+            const formattedTime = match.strTime ? match.strTime.substring(0, 5) : '';
+            
+            let statusBadge = '';
+            let scoreDisplay = '';
+            
+            if (type === 'live') {
+                statusBadge = '<span class="status live"><span class="live-indicator"></span>AO VIVO</span>';
+                scoreDisplay = `<span class="score">${homeScore}</span><span class="vs">-</span><span class="score">${awayScore}</span>`;
+            } else if (type === 'result') {
+                statusBadge = '<span class="status finished">ENCERRADO</span>';
+                scoreDisplay = `<span class="score">${homeScore}</span><span class="vs">-</span><span class="score">${awayScore}</span>`;
+            } else {
+                statusBadge = '<span class="status scheduled">AGENDADO</span>';
+                scoreDisplay = '<span class="vs">vs</span>';
+            }
+
+            return `
+                <div class="game-card">
+                    <div class="game-header">
+                        <span class="league">${league}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="match">
+                        <div class="team home">
+                            <div class="team-logo">${homeTeam.substring(0, 3).toUpperCase()}</div>
+                            <div class="team-name">${homeTeam}</div>
                         </div>
-                        <div class="match-info">
-                            ${status} | ${match.competition.name}
+                        <div class="score-container">
+                            ${scoreDisplay}
+                        </div>
+                        <div class="team away">
+                            <div class="team-logo">${awayTeam.substring(0, 3).toUpperCase()}</div>
+                            <div class="team-name">${awayTeam}</div>
                         </div>
                     </div>
+                    <div class="game-info">
+                        <span>📅 ${formattedDate} ${formattedTime ? 'às ' + formattedTime : ''}</span>
+                        <span>📍 ${venue}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Atualizar seção de jogos ao vivo
+        async function updateLiveGames() {
+            const liveSection = document.getElementById('live');
+            liveSection.innerHTML = '<div class="game-card"><p style="text-align: center; color: #666;">🔄 Carregando jogos ao vivo...</p></div>';
+            
+            const matches = await fetchLiveMatches();
+            
+            if (matches && matches.length > 0) {
+                liveSection.innerHTML = matches.map(match => createGameCard(match, 'live')).join('');
+            } else {
+                liveSection.innerHTML = `
+                    <div class="game-card">
+                        <p style="text-align: center; color: #666; padding: 20px;">
+                            ⚽ Nenhum jogo ao vivo no momento.<br>
+                            <small>Os jogos aparecerão aqui quando começarem!</small>
+                        </p>
+                    </div>
                 `;
-            }).join('');
-        }
-
-        function selectMatch(homeTeam, awayTeam) {
-            const input = document.getElementById('messageInput');
-            input.value = `Quais são as odds para ${homeTeam} vs ${awayTeam}?`;
-            input.focus();
-        }
-
-        function addMessage(content, isUser = false, isTyping = false) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : ''} ${isTyping ? 'typing' : ''}`;
-            
-            if (isTyping) {
-                messageDiv.id = 'typing-indicator';
-            }
-            
-            const avatar = document.createElement('div');
-            avatar.className = 'message-avatar';
-            avatar.textContent = isUser ? 'U' : 'DB';
-            
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            contentDiv.innerHTML = content.replace(/\n/g, '<br>');
-            
-            messageDiv.appendChild(avatar);
-            messageDiv.appendChild(contentDiv);
-            messagesDiv.appendChild(messageDiv);
-            
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            
-            return messageDiv;
-        }
-
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
             }
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const button = document.getElementById('sendButton');
-            const message = input.value.trim();
+        // Atualizar resultados
+        async function updateResults() {
+            const resultsSection = document.getElementById('results');
+            resultsSection.innerHTML = '<div class="game-card"><p style="text-align: center; color: #666;">🔄 Carregando resultados...</p></div>';
             
-            if (!message) return;
+            const matches = await fetchRecentResults();
             
-            addMessage(message, true);
-            input.value = '';
-            button.disabled = true;
-            input.disabled = true;
-            
-            addMessage('Digitando...', false, true);
-            
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'sendMessage',
-                        sessionId: sessionId,
-                        chatInput: message
-                    })
-                });
-                
-                removeTypingIndicator();
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
-                const data = await response.json();
-                const botMessage = data.output || data.response || data.message || 'Desculpe, não consegui processar sua mensagem.';
-                
-                addMessage(botMessage);
-                
-            } catch (error) {
-                removeTypingIndicator();
-                console.error('Erro:', error);
-                addMessage('❌ Erro ao conectar com o servidor. Verifique se o webhook do n8n está ativo e configurado corretamente.');
-            } finally {
-                button.disabled = false;
-                input.disabled = false;
-                input.focus();
+            if (matches && matches.length > 0) {
+                resultsSection.innerHTML = matches.map(match => createGameCard(match, 'result')).join('');
             }
         }
 
-        function handleKeyPress(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
+        // Atualizar próximos jogos
+        async function updateUpcoming() {
+            const upcomingSection = document.getElementById('upcoming');
+            upcomingSection.innerHTML = '<div class="game-card"><p style="text-align: center; color: #666;">🔄 Carregando próximos jogos...</p></div>';
+            
+            const matches = await fetchUpcomingMatches();
+            
+            if (matches && matches.length > 0) {
+                upcomingSection.innerHTML = matches.map(match => createGameCard(match, 'upcoming')).join('');
             }
         }
 
-        loadMatches();
-        setInterval(loadMatches, 60000);
+        // Inicializar todas as seções
+        async function initializeAll() {
+            console.log('🚀 Carregando dados do TheSportsDB...');
+            await updateLiveGames();
+            await updateResults();
+            await updateUpcoming();
+            console.log('✅ Dados carregados com sucesso!');
+        }
+
+        // Inicializar ao carregar a página
+        initializeAll();
+        
+        // Atualizar jogos ao vivo a cada 60 segundos
+        setInterval(updateLiveGames, 60000);
+        
+        // Atualizar outras seções a cada 5 minutos
+        setInterval(() => {
+            updateResults();
+            updateUpcoming();
+        }, 300000);
     </script>
 </body>
 </html>
