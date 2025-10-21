@@ -2,147 +2,94 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DarlanBets - Chat de Apostas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f1419 0%, #1a4d2e 50%, #0f1419 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
-            width: 100%;
             max-width: 1200px;
-            height: 90vh;
-            background: #1f2937;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            border: 2px solid #10b981;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* Melhorado para mobile com altura dinâmica */
+        .chat-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            height: calc(100vh - 20px);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
+        /* Header otimizado para mobile */
         .header {
-            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
-            padding: 24px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .logo-icon {
-            background: #10b981;
-            padding: 12px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .logo-text h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            font-size: 28px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
             font-weight: bold;
+            margin-bottom: 4px;
         }
 
-        .logo-text p {
-            color: #d1fae5;
-            font-size: 14px;
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
         }
 
-        .status-badge {
-            background: #10b981;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
+        /* Tabs responsivas para mobile */
         .tabs {
-            background: #1f2937;
-            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
-            padding: 0 24px;
             display: flex;
-            gap: 8px;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .tab {
-            padding: 16px 24px;
-            background: none;
-            border: none;
-            color: #9ca3af;
-            font-weight: 600;
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
             cursor: pointer;
-            border-bottom: 4px solid transparent;
+            font-weight: 600;
+            font-size: 13px;
+            color: #64748b;
             transition: all 0.3s;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border-bottom: 3px solid transparent;
         }
 
         .tab:hover {
-            color: #d1d5db;
+            background: #edf2f7;
         }
 
         .tab.active {
-            color: white;
-            border-bottom-color: #10b981;
-        }
-
-        .live-badge {
-            background: #ef4444;
-            color: white;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        .tips-badge {
-            background: #f59e0b;
-            color: white;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .content {
-            flex: 1;
-            overflow-y: auto;
-            background: #111827;
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
         }
 
         .tab-content {
             display: none;
-            height: 100%;
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
         }
 
         .tab-content.active {
@@ -153,18 +100,20 @@
         .messages {
             flex: 1;
             overflow-y: auto;
-            padding: 24px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .message {
             display: flex;
-            animation: fadeIn 0.3s;
+            gap: 8px;
+            animation: slideIn 0.3s ease-out;
         }
 
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -176,1091 +125,684 @@
         }
 
         .message.user {
-            justify-content: flex-end;
+            flex-direction: row-reverse;
         }
 
+        /* Avatar menor para mobile */
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        /* Mensagens responsivas para mobile */
         .message-content {
             max-width: 75%;
-            padding: 16px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 10px 14px;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+            word-wrap: break-word;
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border-bottom-right-radius: 4px;
         }
 
-        .message.assistant .message-content {
-            background: #1f2937;
-            color: #e5e7eb;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .message.bot .message-content {
+            background: #f7fafc;
+            color: #1a202c;
+            border-bottom-left-radius: 4px;
         }
 
-        .message-time {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 8px;
-        }
-
-        .quick-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .quick-btn {
-            background: #374151;
-            color: #10b981;
-            border: 1px solid #10b981;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .quick-btn:hover {
-            background: #10b981;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .tip-card {
-            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
-            border: 2px solid #10b981;
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 12px;
-        }
-
-        .tip-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .tip-title {
-            font-weight: bold;
-            color: #d1fae5;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .confidence {
-            background: #fbbf24;
-            color: #111827;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .confidence.high {
-            background: #10b981;
-            color: white;
-        }
-
-        .confidence.medium {
-            background: #fbbf24;
-        }
-
-        .confidence.low {
-            background: #ef4444;
-            color: white;
-        }
-
-        .tip-match {
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .tip-league {
-            color: #10b981;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .tip-prediction {
-            color: #d1fae5;
-            margin-bottom: 8px;
-        }
-
-        .tip-analysis {
-            color: #d1fae5;
-            font-size: 13px;
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-
-        .tip-odd {
-            color: #fbbf24;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .loading-dots {
-            display: flex;
-            gap: 8px;
-            padding: 16px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite;
-        }
-
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-
-        .input-area {
-            background: #1f2937;
-            border-top: 2px solid rgba(16, 185, 129, 0.3);
-            padding: 16px;
-        }
-
+        /* Input otimizado para mobile */
         .input-container {
-            display: flex;
-            gap: 12px;
+            padding: 12px;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
         }
 
-        .input-field {
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+            max-width: 100%;
+        }
+
+        .input-wrapper input {
             flex: 1;
-            background: #374151;
-            color: white;
-            border: 2px solid rgba(16, 185, 129, 0.3);
-            padding: 12px 16px;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-size: 14px;
             outline: none;
-            transition: all 0.3s;
+            transition: border-color 0.3s;
         }
 
-        .input-field:focus {
-            border-color: #10b981;
+        .input-wrapper input:focus {
+            border-color: #667eea;
         }
 
-        .send-button {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        .input-wrapper button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
             border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
-        }
-
-        .send-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.5);
-        }
-
-        .send-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .input-hint {
-            text-align: center;
-            color: #6b7280;
-            font-size: 12px;
-            margin-top: 8px;
-        }
-
-        .live-content {
-            padding: 24px;
-            overflow-y: auto;
-        }
-
-        .live-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-        }
-
-        .live-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .live-title h2 {
-            color: white;
-            font-size: 24px;
-        }
-
-        .flame-icon {
-            color: #ef4444;
-            animation: pulse 2s infinite;
-        }
-
-        .update-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .last-update {
-            color: #9ca3af;
+            font-weight: 600;
             font-size: 14px;
-        }
-
-        .refresh-button {
-            background: #059669;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
         }
 
-        .refresh-button:hover:not(:disabled) {
-            background: #047857;
+        .input-wrapper button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .refresh-button:disabled {
+        .input-wrapper button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .refresh-icon.spinning {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        .matches-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
+        /* Cards de partida responsivos */
         .match-card {
-            background: #1f2937;
-            border: 2px solid rgba(16, 185, 129, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            transition: all 0.3s;
-            animation: fadeIn 0.3s;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .match-card:hover {
-            border-color: #10b981;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .match-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .league-name {
-            color: #10b981;
-            font-weight: 600;
-            font-size: 14px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .match-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .match-status.live {
+            background: #fee;
+            color: #c00;
+        }
+
+        .match-status.scheduled {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .match-teams {
             display: flex;
-            gap: 8px;
-        }
-
-        .status-live {
-            background: #ef4444;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 4px;
-            animation: pulse 2s infinite;
-        }
-
-        .status-scheduled {
-            background: #3b82f6;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .status-halftime {
-            background: #fbbf24;
-            color: #111827;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .match-time {
-            background: #374151;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .match-main {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 16px;
+            margin: 12px 0;
         }
 
         .team {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .team.away {
-            flex-direction: row-reverse;
-            text-align: right;
-        }
-
-        .team-logo {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            background: white;
-            border-radius: 8px;
-            padding: 4px;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
         }
 
         .team-name {
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .score-box {
-            background: #111827;
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .score {
-            font-size: 36px;
-            font-weight: bold;
-            color: #10b981;
-        }
-
-        .vs-text {
-            font-size: 20px;
-            color: #6b7280;
-            font-weight: bold;
-        }
-
-        .score-separator {
             font-size: 24px;
-            color: #6b7280;
+            font-weight: bold;
+            color: #667eea;
+            margin: 0 12px;
+            flex-shrink: 0;
         }
 
-        .odds-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+        .match-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
         }
 
-        .odd-button {
-            background: #374151;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .loading {
             text-align: center;
+            padding: 30px 20px;
+            color: #64748b;
         }
 
-        .odd-button:hover {
-            background: #059669;
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
         }
 
-        .odd-label {
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .odd-value {
-            color: #10b981;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .tip-button {
-            background: #f59e0b;
-            border: none;
-            color: white;
-            padding: 8px 16px;
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 10px;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
             font-size: 13px;
-            transition: all 0.3s;
-            margin-top: 12px;
-            width: 100%;
-        }
-
-        .tip-button:hover {
-            background: #d97706;
-            transform: translateY(-2px);
         }
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
+            color: #64748b;
         }
 
-        .empty-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 16px;
-            color: #4b5563;
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px;
+            opacity: 0.3;
         }
 
-        .empty-title {
-            color: #9ca3af;
-            font-size: 18px;
+        .empty-state h3 {
+            font-size: 16px;
             margin-bottom: 8px;
         }
 
-        .empty-description {
-            color: #6b7280;
-            font-size: 14px;
+        .empty-state p {
+            font-size: 13px;
         }
 
-        .loading-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
+        /* Media queries para tablets e desktops */
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
 
-        .loading-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 16px;
-            color: #10b981;
-            animation: spin 1s linear infinite;
+            .chat-container {
+                height: 90vh;
+            }
+
+            .header h1 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .header {
+                padding: 24px;
+            }
+
+            .tab {
+                padding: 16px;
+                font-size: 14px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .messages {
+                padding: 20px;
+                gap: 16px;
+            }
+
+            .message-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .message-content {
+                max-width: 70%;
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+
+            .input-container {
+                padding: 20px;
+            }
+
+            .input-wrapper {
+                gap: 12px;
+            }
+
+            .input-wrapper button {
+                padding: 12px 24px;
+                font-size: 15px;
+            }
+
+            .match-card {
+                padding: 16px;
+                margin-bottom: 12px;
+            }
+
+            .team-name {
+                font-size: 16px;
+            }
+
+            .score {
+                font-size: 32px;
+                margin: 0 20px;
+            }
+
+            .match-status {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+
+            .match-info {
+                font-size: 12px;
+            }
+
+            .empty-state {
+                padding: 60px 20px;
+            }
+
+            .empty-state svg {
+                width: 80px;
+                height: 80px;
+            }
+
+            .empty-state h3 {
+                font-size: 18px;
+            }
+
+            .empty-state p {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <svg width="32" height="32" fill="white" viewBox="0 0 24 24">
-                            <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
-                        </svg>
-                    </div>
-                    <div class="logo-text">
-                        <h1>DarlanBets</h1>
-                        <p>💰 Chat de Apostas Inteligente</p>
+        <div class="chat-container">
+            <!-- Header -->
+            <div class="header">
+                <h1>⚽ DarlanBets</h1>
+                <p>Seu assistente inteligente de apostas esportivas</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="chat">💬 Chat</div>
+                <div class="tab" data-tab="live">🔴 Ao Vivo</div>
+                <div class="tab" data-tab="tips">📊 Dicas</div>
+            </div>
+
+            <!-- Chat Tab -->
+            <div class="tab-content active" id="chat-tab">
+                <div class="messages" id="messages">
+                    <div class="message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            Olá! Sou seu assistente de apostas. Como posso ajudar você hoje?
+                        </div>
                     </div>
                 </div>
-                <div class="status-badge">Online</div>
-            </div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('chat')">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                </svg>
-                Chat
-            </button>
-            <button class="tab" onclick="switchTab('live')">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
-                Jogos ao Vivo
-                <span class="live-badge">LIVE</span>
-            </button>
-            <button class="tab" onclick="switchTab('tips')">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                </svg>
-                Jogos Futuros
-                <span class="tips-badge">TIPS</span>
-            </button>
-        </div>
-
-        <div id="chat-tab" class="tab-content active">
-            <div class="messages" id="messages"></div>
-            <div class="input-area">
                 <div class="input-container">
-                    <input 
-                        type="text" 
-                        class="input-field" 
-                        id="message-input" 
-                        placeholder="Digite sua mensagem sobre apostas..."
-                        onkeypress="handleKeyPress(event)"
-                    >
-                    <button class="send-button" onclick="sendMessage()" id="send-btn">
-                        Enviar
-                    </button>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            placeholder="Digite sua mensagem..."
+                            onkeypress="handleKeyPress(event)"
+                        />
+                        <button onclick="sendMessage()" id="sendButton">Enviar</button>
+                    </div>
                 </div>
-                <p class="input-hint">Pressione Enter para enviar sua mensagem</p>
             </div>
-        </div>
 
-        <div id="live-tab" class="tab-content">
-            <div class="live-content">
-                <div class="live-header">
-                    <div class="live-title">
-                        <svg class="flame-icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
-                        </svg>
-                        <h2>Jogos ao Vivo</h2>
-                    </div>
-                    <div class="update-info">
-                        <span class="last-update" id="last-update-live"></span>
-                        <button class="refresh-button" onclick="fetchLiveMatches()" id="refresh-btn-live">
-                            <svg class="refresh-icon" id="refresh-icon-live" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                            </svg>
-                            Atualizar
-                        </button>
-                    </div>
-                </div>
-                <div class="matches-container" id="matches-container-live"></div>
+            <!-- Live Tab -->
+            <div class="tab-content" id="live-tab">
+                <div id="liveMatches"></div>
             </div>
-        </div>
 
-        <div id="tips-tab" class="tab-content">
-            <div class="live-content">
-                <div class="live-header">
-                    <div class="live-title">
-                        <svg width="24" height="24" fill="#f59e0b" viewBox="0 0 24 24">
-                            <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                        </svg>
-                        <h2>Jogos Futuros & Indicações</h2>
-                    </div>
-                    <div class="update-info">
-                        <span class="last-update" id="last-update-tips"></span>
-                        <button class="refresh-button" onclick="fetchFutureMatches()" id="refresh-btn-tips">
-                            <svg class="refresh-icon" id="refresh-icon-tips" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                            </svg>
-                            Atualizar
-                        </button>
-                    </div>
-                </div>
-                <div class="matches-container" id="matches-container-tips"></div>
+            <!-- Tips Tab -->
+            <div class="tab-content" id="tips-tab">
+                <div id="tipsMatches"></div>
             </div>
         </div>
     </div>
 
     <script>
-        const WEBHOOK_URL = 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat';
-        const FOOTBALL_API_URL = 'https://api.football-data.org/v4/matches';
-        const FOOTBALL_API_KEY = '9d137eb74f304bc5a79bd6fd6128b2a1';
+        // ============================================
+        // ============================================
+        const CONFIG = {
+            N8N_WEBHOOK_URL: 'https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat',
+            FOOTBALL_API_KEY: '9d137eb74f304bc5a79bd6fd6128b2a1',
+            FOOTBALL_API_URL: 'https://api.football-data.org/v4'
+        };
 
-        let realFutureMatches = [];
-        let realLiveMatches = [];
-
-        addWelcomeMessage();
-        fetchLiveMatches();
-        fetchFutureMatches();
-
-        function addWelcomeMessage() {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message assistant';
-            
-            const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = '<div class="message-content"><p>🎰 Bem-vindo ao DarlanBets! Como posso ajudar você hoje com suas apostas?</p><div class="quick-actions"><button class="quick-btn" onclick="showTips()">📊 Ver Indicações</button><button class="quick-btn" onclick="showFutureMatches()">📅 Jogos de Hoje</button><button class="quick-btn" onclick="askForAnalysis()">🔍 Análise Detalhada</button></div><div class="message-time">' + time + '</div></div>';
-            
-            messagesDiv.appendChild(messageDiv);
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.closest('.tab').classList.add('active');
-            document.getElementById(tabName + '-tab').classList.add('active');
-
-            if (tabName === 'live') {
-                fetchLiveMatches();
-            } else if (tabName === 'tips') {
-                fetchFutureMatches();
-            }
-        }
-
-        function showTips() {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.querySelectorAll('.tab')[2].classList.add('active');
-            document.getElementById('tips-tab').classList.add('active');
-        }
-
-        function showFutureMatches() {
-            showTips();
-        }
-
-        function askForAnalysis() {
-            document.getElementById('message-input').value = 'Quais são as melhores apostas para hoje?';
-            sendMessage();
-        }
-
-        function addMessage(role, content, includeActions) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message ' + role;
-            
-            const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            let actionsHTML = '';
-            if (includeActions && role === 'assistant') {
-                actionsHTML = '<div class="quick-actions"><button class="quick-btn" onclick="showTips()">📊 Ver Mais Indicações</button><button class="quick-btn" onclick="showFutureMatches()">📅 Próximos Jogos</button></div>';
-            }
-            
-            messageDiv.innerHTML = '<div class="message-content"><p>' + content + '</p>' + actionsHTML + '<div class="message-time">' + time + '</div></div>';
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function generateBettingTip(match) {
-            const homeTeam = match.homeTeam.name;
-            const awayTeam = match.awayTeam.name;
-            const league = match.competition.name;
-            
-            const predictions = [
-                {
-                    type: 'Vitória ' + homeTeam,
-                    analysis: homeTeam + ' tem vantagem de jogar em casa. Histórico recente favorece a equipe mandante.',
-                    confidence: 70 + Math.floor(Math.random() * 20),
-                    odd: (1.60 + Math.random() * 1.2).toFixed(2)
-                },
-                {
-                    type: 'Vitória ' + awayTeam,
-                    analysis: awayTeam + ' vem de bons resultados fora de casa e tem forte campanha nesta temporada.',
-                    confidence: 65 + Math.floor(Math.random() * 15),
-                    odd: (2.00 + Math.random() * 2.0).toFixed(2)
-                },
-                {
-                    type: 'Ambas as Equipes Marcam',
-                    analysis: 'Ambas equipes têm ataques efetivos e defesas que sofrem gols regularmente.',
-                    confidence: 75 + Math.floor(Math.random() * 15),
-                    odd: (1.70 + Math.random() * 0.5).toFixed(2)
-                },
-                {
-                    type: 'Mais de 2.5 Gols',
-                    analysis: 'Média de gols das últimas partidas indica tendência de jogo movimentado.',
-                    confidence: 70 + Math.floor(Math.random() * 20),
-                    odd: (1.80 + Math.random() * 0.8).toFixed(2)
-                }
-            ];
-            
-            const bestPrediction = predictions.reduce(function(prev, current) {
-                return (prev.confidence > current.confidence) ? prev : current;
-            });
-            
-            return {
-                match: homeTeam + ' vs ' + awayTeam,
-                league: league,
-                prediction: bestPrediction.type,
-                analysis: bestPrediction.analysis,
-                odd: bestPrediction.odd,
-                confidence: bestPrediction.confidence,
-                date: new Date(match.utcDate).toLocaleDateString('pt-BR', { 
-                    day: '2-digit', 
-                    month: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })
-            };
-        }
-
-        function addTipMessage(tip) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message assistant';
-            
-            const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            const confidenceClass = tip.confidence >= 80 ? 'high' : tip.confidence >= 65 ? 'medium' : 'low';
-            
-            messageDiv.innerHTML = '<div class="message-content"><div class="tip-card"><div class="tip-header"><span class="tip-title">💡 Indicação de Aposta Real</span><span class="confidence ' + confidenceClass + '">' + tip.confidence + '% Confiança</span></div><div class="tip-match">' + tip.match + '</div><div class="tip-league">🏆 ' + tip.league + ' - ' + tip.date + '</div><div class="tip-prediction">📈 Previsão: ' + tip.prediction + '</div><div class="tip-analysis">💭 ' + tip.analysis + '</div><div class="tip-odd">💰 Odd Estimada: ' + tip.odd + '</div></div><div class="message-time">' + time + '</div></div>';
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function showLoading() {
-            const messagesDiv = document.getElementById('messages');
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'message assistant';
-            loadingDiv.id = 'loading-message';
-            loadingDiv.innerHTML = '<div class="message-content"><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
-            messagesDiv.appendChild(loadingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function removeLoading() {
-            const loadingMsg = document.getElementById('loading-message');
-            if (loadingMsg) loadingMsg.remove();
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('message-input');
-            const sendBtn = document.getElementById('send-btn');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            addMessage('user', message);
-            input.value = '';
-            sendBtn.disabled = true;
-            showLoading();
-            
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        sessionId: 'user_' + Date.now()
-                    })
-                });
+        // ============================================
+        // GERENCIAMENTO DE ABAS
+        // ============================================
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
                 
-                const data = await response.json();
-                removeLoading();
-                addMessage('assistant', data.response || data.message || 'Desculpe, não consegui processar sua mensagem.', true);
-            } catch (error) {
-                removeLoading();
-                addMessage('assistant', '❌ Erro ao conectar com o servidor. Tente novamente.');
-            } finally {
-                sendBtn.disabled = false;
-            }
-        }
+                // Atualizar abas ativas
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+                
+                // Carregar dados quando necessário
+                if (tabName === 'live') {
+                    loadLiveMatches();
+                } else if (tabName === 'tips') {
+                    loadTipsMatches();
+                }
+            });
+        });
 
+        // ============================================
+        // CHAT FUNCTIONALITY
+        // ============================================
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
 
-        function requestTip(matchId) {
-            const match = realFutureMatches.find(function(m) { return m.id === matchId; });
-            if (!match) {
-                addMessage('assistant', '❌ Jogo não encontrado. Atualize a lista de jogos.', false);
-                return;
-            }
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
             
-            const tip = generateBettingTip(match);
-            addTipMessage(tip);
+            if (!message) return;
             
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.querySelectorAll('.tab')[0].classList.add('active');
-            document.getElementById('chat-tab').classList.add('active');
-        }
-
-        async function fetchLiveMatches() {
-            const container = document.getElementById('matches-container-live');
-            const refreshBtn = document.getElementById('refresh-btn-live');
-            const refreshIcon = document.getElementById('refresh-icon-live');
+            // Adicionar mensagem do usuário
+            addMessage(message, 'user');
+            input.value = '';
             
-            refreshBtn.disabled = true;
-            refreshIcon.classList.add('spinning');
-            
-            if (container.children.length === 0) {
-                container.innerHTML = '<div class="loading-state"><svg class="loading-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><p class="empty-title">Buscando jogos ao vivo da API...</p></div>';
-            }
+            // Desabilitar botão durante envio
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = true;
+            sendButton.textContent = 'Enviando...';
             
             try {
-                const response = await fetch(FOOTBALL_API_URL, {
-                    method: 'GET',
+                // Enviar para n8n webhook
+                const response = await fetch(CONFIG.N8N_WEBHOOK_URL, {
+                    method: 'POST',
                     headers: {
-                        'X-Auth-Token': FOOTBALL_API_KEY
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        userId: getUserId()
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Validar resposta
+                if (data && data.response) {
+                    addMessage(data.response, 'bot');
+                } else if (data && data.message) {
+                    addMessage(data.message, 'bot');
+                } else {
+                    throw new Error('Formato de resposta inválido');
+                }
+                
+            } catch (error) {
+                console.error('Erro ao enviar mensagem:', error);
+                addMessage(
+                    'Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.',
+                    'bot'
+                );
+            } finally {
+                sendButton.disabled = false;
+                sendButton.textContent = 'Enviar';
+            }
+        }
+
+        function addMessage(text, type) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = type === 'user' ? '👤' : '🤖';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = text;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll para o final
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getUserId() {
+            // Gerar ou recuperar ID único do usuário
+            let userId = localStorage.getItem('darlanbets_userId');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('darlanbets_userId', userId);
+            }
+            return userId;
+        }
+
+        // ============================================
+        // FOOTBALL API - JOGOS AO VIVO
+        // ============================================
+        async function loadLiveMatches() {
+            const container = document.getElementById('liveMatches');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Carregando jogos ao vivo...</p></div>';
+            
+            try {
+                const response = await fetch(`${CONFIG.FOOTBALL_API_URL}/matches?status=LIVE`, {
+                    headers: {
+                        'X-Auth-Token': CONFIG.FOOTBALL_API_KEY
                     }
                 });
                 
                 if (!response.ok) {
-                    console.error('Erro HTTP:', response.status);
-                    throw new Error('API retornou erro: ' + response.status);
+                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                console.log('Dados da API:', data);
                 
-                realLiveMatches = data.matches.filter(function(match) {
-                    return match.status === 'IN_PLAY' || match.status === 'PAUSED';
-                }).slice(0, 10);
-                
-                if (realLiveMatches.length === 0) {
-                    console.log('Nenhum jogo ao vivo, usando exemplos');
-                    useSampleLiveMatches();
+                if (data.matches && data.matches.length > 0) {
+                    displayMatches(data.matches, container, true);
                 } else {
-                    displayLiveMatches(realLiveMatches);
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <h3>Nenhum jogo ao vivo no momento</h3>
+                            <p>Volte mais tarde para ver os jogos em andamento</p>
+                        </div>
+                    `;
                 }
-                updateLastUpdate('live');
+                
             } catch (error) {
-                console.error('Erro ao buscar jogos:', error);
-                useSampleLiveMatches();
-                updateLastUpdate('live');
-            } finally {
-                refreshBtn.disabled = false;
-                refreshIcon.classList.remove('spinning');
+                console.error('Erro ao carregar jogos ao vivo:', error);
+                container.innerHTML = `
+                    <div class="error-message">
+                        Erro ao carregar jogos ao vivo. Verifique sua conexão e tente novamente.
+                    </div>
+                    <div class="empty-state">
+                        <p>Não foi possível conectar à API de futebol.</p>
+                    </div>
+                `;
             }
-        }
-        
-        function useSampleLiveMatches() {
-            realLiveMatches = [
-                {
-                    id: 1,
-                    competition: { name: 'Brasileirão Série A' },
-                    homeTeam: { name: 'Flamengo', crest: 'https://crests.football-data.org/1776.png' },
-                    awayTeam: { name: 'Palmeiras', crest: 'https://crests.football-data.org/1778.png' },
-                    score: { fullTime: { home: 2, away: 1 }, halfTime: { home: 1, away: 0 } },
-                    minute: '78',
-                    status: 'IN_PLAY'
-                },
-                {
-                    id: 2,
-                    competition: { name: 'Premier League' },
-                    homeTeam: { name: 'Manchester City', crest: 'https://crests.football-data.org/65.png' },
-                    awayTeam: { name: 'Liverpool', crest: 'https://crests.football-data.org/64.png' },
-                    score: { fullTime: { home: 1, away: 1 }, halfTime: { home: 0, away: 1 } },
-                    minute: '65',
-                    status: 'IN_PLAY'
-                },
-                {
-                    id: 3,
-                    competition: { name: 'La Liga' },
-                    homeTeam: { name: 'Real Madrid', crest: 'https://crests.football-data.org/86.png' },
-                    awayTeam: { name: 'Barcelona', crest: 'https://crests.football-data.org/81.png' },
-                    score: { fullTime: { home: 3, away: 2 }, halfTime: { home: 2, away: 1 } },
-                    minute: '90+2',
-                    status: 'IN_PLAY'
-                }
-            ];
-            displayLiveMatches(realLiveMatches);
         }
 
-        async function fetchFutureMatches() {
-            const container = document.getElementById('matches-container-tips');
-            const refreshBtn = document.getElementById('refresh-btn-tips');
-            const refreshIcon = document.getElementById('refresh-icon-tips');
-            
-            refreshBtn.disabled = true;
-            refreshIcon.classList.add('spinning');
-            
-            if (container.children.length === 0) {
-                container.innerHTML = '<div class="loading-state"><svg class="loading-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><p class="empty-title">Buscando jogos futuros da API...</p></div>';
-            }
+        // ============================================
+        // FOOTBALL API - PRÓXIMOS JOGOS
+        // ============================================
+        async function loadTipsMatches() {
+            const container = document.getElementById('tipsMatches');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Carregando próximos jogos...</p></div>';
             
             try {
-                const response = await fetch(FOOTBALL_API_URL, {
-                    method: 'GET',
-                    headers: {
-                        'X-Auth-Token': FOOTBALL_API_KEY
+                const today = new Date().toISOString().split('T')[0];
+                const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                
+                const response = await fetch(
+                    `${CONFIG.FOOTBALL_API_URL}/matches?dateFrom=${today}&dateTo=${nextWeek}&status=SCHEDULED`,
+                    {
+                        headers: {
+                            'X-Auth-Token': CONFIG.FOOTBALL_API_KEY
+                        }
                     }
-                });
+                );
                 
                 if (!response.ok) {
-                    console.error('Erro HTTP:', response.status);
-                    throw new Error('API retornou erro: ' + response.status);
+                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                console.log('Dados da API (futuros):', data);
                 
-                realFutureMatches = data.matches.filter(function(match) {
-                    return match.status === 'SCHEDULED' || match.status === 'TIMED';
-                }).slice(0, 20);
-                
-                if (realFutureMatches.length === 0) {
-                    console.log('Nenhum jogo futuro, usando exemplos');
-                    useSampleFutureMatches();
+                if (data.matches && data.matches.length > 0) {
+                    displayMatches(data.matches, container, false);
                 } else {
-                    displayFutureMatches(realFutureMatches);
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <h3>Nenhum jogo agendado</h3>
+                            <p>Não há jogos programados para os próximos dias</p>
+                        </div>
+                    `;
                 }
-                updateLastUpdate('tips');
+                
             } catch (error) {
-                console.error('Erro ao buscar jogos futuros:', error);
-                useSampleFutureMatches();
-                updateLastUpdate('tips');
-            } finally {
-                refreshBtn.disabled = false;
-                refreshIcon.classList.remove('spinning');
+                console.error('Erro ao carregar próximos jogos:', error);
+                container.innerHTML = `
+                    <div class="error-message">
+                        Erro ao carregar próximos jogos. Verifique sua conexão e tente novamente.
+                    </div>
+                    <div class="empty-state">
+                        <p>Não foi possível conectar à API de futebol.</p>
+                    </div>
+                `;
             }
-        }
-        
-        function useSampleFutureMatches() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(20, 0, 0, 0);
-            
-            const afterTomorrow = new Date();
-            afterTomorrow.setDate(afterTomorrow.getDate() + 2);
-            afterTomorrow.setHours(18, 30, 0, 0);
-            
-            realFutureMatches = [
-                {
-                    id: 101,
-                    competition: { name: 'Champions League' },
-                    homeTeam: { name: 'Bayern Munich', crest: 'https://crests.football-data.org/5.png' },
-                    awayTeam: { name: 'PSG', crest: 'https://crests.football-data.org/524.png' },
-                    utcDate: tomorrow.toISOString(),
-                    status: 'SCHEDULED'
-                },
-                {
-                    id: 102,
-                    competition: { name: 'La Liga' },
-                    homeTeam: { name: 'Real Madrid', crest: 'https://crests.football-data.org/86.png' },
-                    awayTeam: { name: 'Barcelona', crest: 'https://crests.football-data.org/81.png' },
-                    utcDate: tomorrow.toISOString(),
-                    status: 'SCHEDULED'
-                },
-                {
-                    id: 103,
-                    competition: { name: 'Premier League' },
-                    homeTeam: { name: 'Arsenal', crest: 'https://crests.football-data.org/57.png' },
-                    awayTeam: { name: 'Chelsea', crest: 'https://crests.football-data.org/61.png' },
-                    utcDate: afterTomorrow.toISOString(),
-                    status: 'SCHEDULED'
-                },
-                {
-                    id: 104,
-                    competition: { name: 'Brasileirão Série A' },
-                    homeTeam: { name: 'Corinthians', crest: 'https://crests.football-data.org/1779.png' },
-                    awayTeam: { name: 'São Paulo', crest: 'https://crests.football-data.org/1777.png' },
-                    utcDate: afterTomorrow.toISOString(),
-                    status: 'SCHEDULED'
-                },
-                {
-                    id: 105,
-                    competition: { name: 'Serie A' },
-                    homeTeam: { name: 'Inter Milan', crest: 'https://crests.football-data.org/108.png' },
-                    awayTeam: { name: 'AC Milan', crest: 'https://crests.football-data.org/98.png' },
-                    utcDate: tomorrow.toISOString(),
-                    status: 'SCHEDULED'
-                },
-                {
-                    id: 106,
-                    competition: { name: 'Bundesliga' },
-                    homeTeam: { name: 'Borussia Dortmund', crest: 'https://crests.football-data.org/4.png' },
-                    awayTeam: { name: 'RB Leipzig', crest: 'https://crests.football-data.org/721.png' },
-                    utcDate: afterTomorrow.toISOString(),
-                    status: 'SCHEDULED'
-                }
-            ];
-            displayFutureMatches(realFutureMatches);
         }
 
-        function displayLiveMatches(matches) {
-            const container = document.getElementById('matches-container-live');
+        // ============================================
+        // RENDERIZAÇÃO DE PARTIDAS
+        // ============================================
+        function displayMatches(matches, container, isLive) {
+            container.innerHTML = '';
             
-            if (matches.length === 0) {
-                container.innerHTML = '<div class="empty-state"><svg class="empty-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><p class="empty-title">Nenhum jogo ao vivo no momento</p><p class="empty-description">Aguarde os próximos jogos começarem</p></div>';
-                return;
-            }
-            
-            let html = '';
-            matches.forEach(function(match) {
-                const odds = getRandomOdds();
-                const homeScore = match.score.fullTime.home || match.score.halfTime.home || 0;
-                const awayScore = match.score.fullTime.away || match.score.halfTime.away || 0;
-                const time = match.minute ? match.minute + "'" : match.status;
-                const isHalftime = match.status === 'PAUSED';
-                
-                html += '<div class="match-card"><div class="match-header"><span class="league-name">🏆 ' + match.competition.name + '</span><div class="match-status">' + (isHalftime ? '<span class="status-halftime">INTERVALO</span>' : '<span class="status-live"><span style="width: 8px; height: 8px; background: white; border-radius: 50%; display: inline-block;"></span> AO VIVO</span>') + '<span class="match-time">⏱️ ' + time + '</span></div></div><div class="match-main"><div class="team home"><img src="' + (match.homeTeam.crest || 'https://via.placeholder.com/40') + '" alt="' + match.homeTeam.name + '" class="team-logo" onerror="this.src=\'https://via.placeholder.com/40?text=?\'"><span class="team-name">' + match.homeTeam.name + '</span></div><div class="score-box"><span class="score">' + homeScore + '</span><span class="score-separator">-</span><span class="score">' + awayScore + '</span></div><div class="team away"><img src="' + (match.awayTeam.crest || 'https://via.placeholder.com/40') + '" alt="' + match.awayTeam.name + '" class="team-logo" onerror="this.src=\'https://via.placeholder.com/40?text=?\'"><span class="team-name">' + match.awayTeam.name + '</span></div></div><div class="odds-container"><button class="odd-button"><span class="odd-label">Casa</span><span class="odd-value">' + odds.home + '</span></button><button class="odd-button"><span class="odd-label">Empate</span><span class="odd-value">' + odds.draw + '</span></button><button class="odd-button"><span class="odd-label">Fora</span><span class="odd-value">' + odds.away + '</span></button></div></div>';
+            matches.forEach(match => {
+                const card = createMatchCard(match, isLive);
+                container.appendChild(card);
             });
-            
-            container.innerHTML = html;
         }
 
-        function displayFutureMatches(matches) {
-            const container = document.getElementById('matches-container-tips');
+        function createMatchCard(match, isLive) {
+            const card = document.createElement('div');
+            card.className = 'match-card';
             
-            if (matches.length === 0) {
-                container.innerHTML = '<div class="empty-state"><svg class="empty-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg><p class="empty-title">Nenhum jogo programado na API</p><p class="empty-description">Jogos futuros da API aparecerão aqui em breve</p></div>';
-                return;
-            }
+            const homeTeam = match.homeTeam?.name || 'Time Casa';
+            const awayTeam = match.awayTeam?.name || 'Time Visitante';
+            const homeScore = match.score?.fullTime?.home ?? '-';
+            const awayScore = match.score?.fullTime?.away ?? '-';
+            const competition = match.competition?.name || 'Competição';
+            const matchDate = new Date(match.utcDate);
+            const formattedDate = matchDate.toLocaleDateString('pt-BR');
+            const formattedTime = matchDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             
-            let html = '';
-            matches.forEach(function(match) {
-                const odds = getRandomOdds();
-                const matchDate = new Date(match.utcDate);
-                const dateStr = matchDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-                const timeStr = matchDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                
-                html += '<div class="match-card"><div class="match-header"><span class="league-name">🏆 ' + match.competition.name + '</span><div class="match-status"><span class="status-scheduled">📅 ' + dateStr + ' às ' + timeStr + '</span></div></div><div class="match-main"><div class="team home"><img src="' + (match.homeTeam.crest || 'https://via.placeholder.com/40') + '" alt="' + match.homeTeam.name + '" class="team-logo" onerror="this.src=\'https://via.placeholder.com/40?text=?\'"><span class="team-name">' + match.homeTeam.name + '</span></div><div class="score-box"><span class="vs-text">VS</span></div><div class="team away"><img src="' + (match.awayTeam.crest || 'https://via.placeholder.com/40') + '" alt="' + match.awayTeam.name + '" class="team-logo" onerror="this.src=\'https://via.placeholder.com/40?text=?\'"><span class="team-name">' + match.awayTeam.name + '</span></div></div><div class="odds-container"><button class="odd-button"><span class="odd-label">Casa</span><span class="odd-value">' + odds.home + '</span></button><button class="odd-button"><span class="odd-label">Empate</span><span class="odd-value">' + odds.draw + '</span></button><button class="odd-button"><span class="odd-label">Fora</span><span class="odd-value">' + odds.away + '</span></button></div><button class="tip-button" onclick="requestTip(' + match.id + ')">💡 Ver Indicação de Aposta (Jogo Real da API)</button></div>';
-            });
+            card.innerHTML = `
+                <div class="match-header">
+                    <span style="font-weight: 600; color: #64748b; font-size: 13px;">${competition}</span>
+                    <span class="match-status ${isLive ? 'live' : 'scheduled'}">
+                        ${isLive ? '🔴 AO VIVO' : '📅 AGENDADO'}
+                    </span>
+                </div>
+                <div class="match-teams">
+                    <div class="team">
+                        <div class="team-name">${homeTeam}</div>
+                    </div>
+                    <div class="score">${homeScore} - ${awayScore}</div>
+                    <div class="team">
+                        <div class="team-name">${awayTeam}</div>
+                    </div>
+                </div>
+                <div class="match-info">
+                    <span>📅 ${formattedDate}</span>
+                    <span>🕐 ${formattedTime}</span>
+                </div>
+            `;
             
-            container.innerHTML = html;
+            return card;
         }
 
-        function getRandomOdds() {
-            return {
-                home: (1.5 + Math.random() * 3).toFixed(2),
-                draw: (2.8 + Math.random() * 1.5).toFixed(2),
-                away: (2.0 + Math.random() * 3.5).toFixed(2)
-            };
-        }
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DarlanBets inicializado com sucesso!');
+            
+            // Focar no input de mensagem
+            document.getElementById('messageInput').focus();
+        });
 
-        function updateLastUpdate(type) {
-            const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('last-update-' + type).textContent = 'Última atualização: ' + time;
-        }
-
-        setInterval(function() {
+        // Auto-atualizar jogos ao vivo a cada 30 segundos
+        setInterval(() => {
             const liveTab = document.getElementById('live-tab');
-            const tipsTab = document.getElementById('tips-tab');
-            
             if (liveTab.classList.contains('active')) {
-                fetchLiveMatches();
-            }
-            if (tipsTab.classList.contains('active')) {
-                fetchFutureMatches();
+                loadLiveMatches();
             }
         }, 30000);
     </script>
