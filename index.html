@@ -2,7 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>DarlanBets - Apostas Inteligentes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -472,29 +474,285 @@
             background: rgba(0, 0, 0, 0.3);
         }
 
+        /* === BOTÃO INICIAR CHAT === */
+        .chat-init-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 30px;
+            background: rgba(0, 0, 0, 0.2);
+            min-height: 650px;
+        }
+
+        .start-chat-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 50px;
+            font-size: 1.3em;
+            font-weight: 600;
+            background: #ffffff;
+            color: #1a1f3a;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .start-chat-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.4);
+            background: #f0f0f0;
+        }
+
+        .start-chat-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .start-chat-btn i {
+            font-size: 1.5em;
+        }
+
+        .chat-info {
+            margin-top: 20px;
+            color: #ffffff;
+            opacity: 0.7;
+            font-size: 1em;
+            text-align: center;
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
                 flex-direction: column;
+                gap: 10px;
             }
 
-            .chat-header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .chat-title h2 {
-                justify-content: center;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
+            .subtitle {
+                font-size: 1em;
             }
 
             .info-badge {
                 flex-direction: column;
                 gap: 10px;
+                padding: 10px 20px;
+            }
+
+            .info-badge span {
+                font-size: 0.9em;
+            }
+
+            header {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+
+            /* Chat Header Mobile */
+            .chat-header {
+                padding: 15px;
+            }
+
+            .chat-header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .chat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+
+            .chat-title h2 {
+                font-size: 1.3em;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .chat-title p {
+                font-size: 0.9em;
+            }
+
+            /* Features Grid Mobile */
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .feature-item {
+                padding: 12px;
+            }
+
+            .feature-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .feature-text h4 {
+                font-size: 1em;
+            }
+
+            .feature-text p {
+                font-size: 0.85em;
+            }
+
+            /* Chat Container Mobile */
+            .custom-chat {
+                height: 500px;
+            }
+
+            .chat-messages {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .message-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .message-content {
+                max-width: 80%;
+            }
+
+            .message-text {
+                padding: 12px 15px;
+                font-size: 0.95em;
+            }
+
+            .typing-indicator {
+                margin-left: 50px;
+                padding: 12px 15px;
+            }
+
+            /* Chat Input Mobile */
+            .chat-input-container {
+                padding: 15px;
+            }
+
+            .input-wrapper {
+                gap: 10px;
+            }
+
+            .chat-input {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+
+            .send-button {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+
+            /* Chat Init Button Mobile */
+            .chat-init-wrapper {
+                padding: 40px 20px;
+                min-height: 500px;
+            }
+
+            .start-chat-btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .start-chat-btn i {
+                font-size: 1.8em;
+            }
+
+            .chat-info {
+                font-size: 0.9em;
+                padding: 0 15px;
+            }
+
+            /* iFrame Mobile - CRÍTICO PARA FUNCIONAR */
+            #chatIframe {
+                height: 500px !important;
+                min-height: 500px;
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+
+            /* Tabs Mobile */
+            .tabs {
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .tab {
+                padding: 12px 20px;
+                font-size: 15px;
+                flex: 1;
+                min-width: 140px;
+                justify-content: center;
+            }
+
+            .tab i {
+                font-size: 14px;
+            }
+
+            /* Embed Container Mobile */
+            .embed-container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .embed-title {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .embed-title i {
+                font-size: 1.2em;
+            }
+
+            /* iFrames de Jogos Mobile */
+            #live iframe,
+            #schedule iframe {
+                height: 600px !important;
+                border-radius: 10px;
+            }
+        }
+
+        /* Mobile Extra Small */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .chat-title h2 {
+                font-size: 1.1em;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .start-chat-btn {
+                font-size: 1em;
+                padding: 12px 25px;
+            }
+
+            .tab {
+                font-size: 14px;
+                padding: 10px 15px;
+                min-width: 120px;
             }
         }
     </style>
@@ -587,12 +845,23 @@
             </div>
 
             <div class="chat-container">
+                <!-- Botão para Iniciar Chat -->
+                <div id="chatInitButton" class="chat-init-wrapper">
+                    <button class="start-chat-btn" onclick="initializeChat()">
+                        <i class="fas fa-comments"></i>
+                        <span>Iniciar Conversa com o Assistente</span>
+                    </button>
+                    <p class="chat-info">Clique para começar a receber análises e palpites personalizados</p>
+                </div>
+                
                 <!-- IFRAME DO CHAT N8N -->
                 <iframe 
+                    id="chatIframe"
                     src="https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat" 
                     width="100%" 
-                    height="650" 
-                    style="border: none; border-radius: 0;">
+                    height="650"
+                    allow="clipboard-write; microphone"
+                    style="border: none; border-radius: 0; display: none;">
                 </iframe>
             </div>
         </div>
@@ -644,6 +913,57 @@
     </div>
 
     <script>
+        // Função para inicializar o chat
+        function initializeChat() {
+            const initButton = document.getElementById('chatInitButton');
+            const chatIframe = document.getElementById('chatIframe');
+            
+            // Esconder botão e mostrar iframe
+            initButton.style.display = 'none';
+            chatIframe.style.display = 'block';
+            
+            // Aguardar o iframe carregar e enviar mensagem automática
+            chatIframe.onload = function() {
+                setTimeout(() => {
+                    try {
+                        // Tentar enviar mensagem através do iframe
+                        const message = "Olá! Gostaria de receber análises e palpites para apostas.";
+                        
+                        // Enviar mensagem via postMessage para o iframe
+                        chatIframe.contentWindow.postMessage({
+                            type: 'sendMessage',
+                            message: message
+                        }, '*');
+                        
+                        // Alternativa: fazer requisição direta ao webhook
+                        fetch('https://n8n-n8n.rthuab.easypanel.host/webhook/9f33aea9-a9bd-4275-a0cc-35c7d295c42c/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                action: 'sendMessage',
+                                sessionId: getSessionId(),
+                                chatInput: message
+                            })
+                        }).catch(err => console.log('Mensagem inicial enviada'));
+                    } catch (e) {
+                        console.log('Chat inicializado');
+                    }
+                }, 1000);
+            };
+        }
+
+        // Função para gerar/obter Session ID
+        function getSessionId() {
+            let sessionId = localStorage.getItem('darlanbet_session');
+            if (!sessionId) {
+                sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('darlanbet_session', sessionId);
+            }
+            return sessionId;
+        }
+
         // Função para alternar seções
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.section');
@@ -666,7 +986,7 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'scorebat-jssdk'));
 
-        console.log('✓ DarlanBets - Sistema carregado com sucesso!');
+        console.log('✔ DarlanBets - Sistema carregado com sucesso!');
     </script>
 </body>
 </html>
